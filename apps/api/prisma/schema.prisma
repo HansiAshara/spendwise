@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  name         String
+  email        String    @unique
+  passwordHash String
+  currency     String    @default("LKR")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  expenses     Expense[]
+  budgets      Budget[]
+
+  @@map("users")
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  icon     String
+  color    String
+  expenses Expense[]
+  budgets  Budget[]
+
+  @@map("categories")
+}
+
+model Expense {
+  id         Int      @id @default(autoincrement())
+  amount     Decimal  @db.Decimal(10, 2)
+  note       String?
+  date       DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     Int
+  categoryId Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@map("expenses")
+}
+
+model Budget {
+  id         Int      @id @default(autoincrement())
+  amount     Decimal  @db.Decimal(10, 2)
+  month      Int
+  year       Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     Int
+  categoryId Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@unique([userId, categoryId, month, year])
+  @@map("budgets")
+}
