@@ -12,8 +12,10 @@
 // ============================================
 
 import { Router } from 'express'
+import authRoutes   from './auth.routes' 
 
 const router = Router()
+
 
 // ── Health Check ─────────────────────────────────────
 // Simple ping to confirm API is alive
@@ -28,14 +30,14 @@ router.get('/health', (req, res) => {
 // ── Feature Routes ───────────────────────────────────
 // We will uncomment these as we build each feature:
 //
-// import authRoutes     from './auth.routes'
-// import expenseRoutes  from './expense.routes'
+//import authRoutes     from './auth.routes'
+// import expenseRoutes  from './expense.routes' -uncommit
 // import budgetRoutes   from './budget.routes'
 // import insightRoutes  from './insights.routes'
 // import analyticsRoutes from './analytics.routes'
 // import exportRoutes   from './export.routes'
 //
-// router.use('/auth',      authRoutes)
+router.use('/auth',      authRoutes)
 // router.use('/expenses',  expenseRoutes)
 // router.use('/budgets',   budgetRoutes)
 // router.use('/insights',  insightRoutes)

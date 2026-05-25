@@ -1,0 +1,106 @@
+//Controllers receive the HTTP request, call the service, and send the response
+
+
+// ============================================
+// Auth Controller
+// ============================================
+// Handles HTTP requests for auth endpoints.
+//
+// Controller responsibilities:
+//   1. Extract data from req.body / req.user
+//   2. Call the appropriate service function
+//   3. Send success or error response
+//
+// Controller does NOT:
+//   - Contain business logic
+//   - Query the database directly
+//   - Know about hashing or JWT internals
+// ============================================
+
+import { Request, Response } from 'express'
+import * as AuthService from '../services/auth.service'
+import { sendSuccess, sendError } from '../utils/response'
+
+// ── Register ─────────────────────────────────────────
+// POST /api/auth/register
+// Creates new account, returns user + token
+export async function register(req: Request, res: Response): Promise<void> {
+    try {
+        // req.body is already validated by Zod middleware
+        const { user, token } = await AuthService.registerUser(req.body)
+
+        // 201 = Created (not 200 — we created a new resource)
+        sendSuccess(res, { user, token }, 'Account created successfully', 201)
+
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Registration failed'
+
+        // 409 = Conflict (email already exists)
+        // 400 = Bad Request (other errors)
+        const status = message.includes('already exists') ? 409 : 400
+        sendError(res, message, status)
+    }
+}
+
+// ── Login ────────────────────────────────────────────
+// POST /api/auth/login
+// Verifies credentials, returns user + token
+export async function login(req: Request, res: Response): Promise<void> {
+    try {
+        const { user, token } = await AuthService.loginUser(req.body)
+
+        sendSuccess(res, { user, token }, 'Login successful')
+
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Login failed'
+
+        // 401 = Unauthorized (wrong credentials)
+        sendError(res, message, 401)
+    }
+}
+
+// ── Logout ───────────────────────────────────────────
+// POST /api/auth/logout
+// On the backend, logout just confirms success.
+// The frontend is responsible for deleting the token.
+// (We are using stateless JWT — no server-side sessions)
+export async function logout(req: Request, res: Response): Promise<void> {
+    // Nothing to do server-side with stateless JWT
+    // Frontend will delete the token from storage
+    sendSuccess(res, null, 'Logged out successfully')
+}
+
+// ── Get Current User ─────────────────────────────────
+// GET /api/auth/me
+// Returns the logged-in user's profile
+// Protected route — requires valid JWT token
+export async function getMe(req: Request, res: Response): Promise<void> {
+    try {
+        // req.user is set by the protect middleware
+        // It contains userId from the JWT token
+        const user = await AuthService.getCurrentUser(req.user!.userId)
+
+        sendSuccess(res, { user }, 'User fetched successfully')
+
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to get user'
+        sendError(res, message, 404)
+    }
+}
+
+// ── Update Profile ───────────────────────────────────
+// PATCH /api/auth/me
+// Updates name or email from settings page
+// Protected route — requires valid JWT token
+export async function updateMe(req: Request, res: Response): Promise<void> {
+    try {
+        const user = await AuthService.updateProfile(req.user!.userId, req.body)
+
+        sendSuccess(res, { user }, 'Profile updated successfully')
+
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Update failed'
+        const status = message.includes('already in use') ? 409 : 400
+        sendError(res, message, status)
+    }
+}
