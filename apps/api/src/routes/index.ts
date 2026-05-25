@@ -12,7 +12,8 @@
 // ============================================
 
 import { Router } from 'express'
-import authRoutes   from './auth.routes' 
+import authRoutes  from './auth.routes' 
+import expenseRoutes  from './expense.routes'
 
 const router = Router()
 
@@ -38,7 +39,7 @@ router.get('/health', (req, res) => {
 // import exportRoutes   from './export.routes'
 //
 router.use('/auth',      authRoutes)
-// router.use('/expenses',  expenseRoutes)
+router.use('/expenses',  expenseRoutes)
 // router.use('/budgets',   budgetRoutes)
 // router.use('/insights',  insightRoutes)
 // router.use('/analytics', analyticsRoutes)
