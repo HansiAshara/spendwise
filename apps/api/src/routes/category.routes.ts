@@ -24,7 +24,7 @@ router.use(protect)
 router.get('/', async (req, res) => {
     try {
         const categories = await prisma.category.findMany({
-            orderBy: { name: 'asc' }, // alphabetical order
+            orderBy: { name: 'asc' }, // use our custom display order
         })
 
         sendSuccess(res, { categories }, 'Categories fetched successfully')
