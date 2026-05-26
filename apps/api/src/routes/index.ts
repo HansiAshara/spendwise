@@ -16,6 +16,7 @@ import authRoutes  from './auth.routes'
 import expenseRoutes  from './expense.routes'
 import budgetRoutes   from './budget.routes'
 import analyticsRoutes from './analytics.routes'
+import categoryRoutes    from './category.routes'
 
 const router = Router()
 
@@ -46,5 +47,6 @@ router.use('/budgets',   budgetRoutes)
 // router.use('/insights',  insightRoutes)
 router.use('/analytics', analyticsRoutes)
 // router.use('/export',    exportRoutes)
+router.use('/categories', categoryRoutes) 
 
 export default router

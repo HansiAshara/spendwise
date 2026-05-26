@@ -16,14 +16,14 @@ async function main() {
     console.log(' Seeding categories...')
 
     const categories = [
-        { name: 'Food', icon: '🍔', color: '#FF6384' },
-        { name: 'Transport', icon: '🚌', color: '#36A2EB' },
-        { name: 'Education', icon: '📚', color: '#FFCE56' },
-        { name: 'Entertainment', icon: '🎮', color: '#4BC0C0' },
-        { name: 'Health', icon: '💊', color: '#9966FF' },
-        { name: 'Utilities', icon: '💡', color: '#FF9F40' },
-        { name: 'Shopping', icon: '🛍️', color: '#FF6B6B' },
-        { name: 'Other', icon: '📦', color: '#C9CBCF' },
+        { name: 'Education', icon: '📚', color: '#FFCE56', order: 1 },
+        { name: 'Food', icon: '🍔', color: '#FF6384', order: 2 },
+        { name: 'Health', icon: '💊', color: '#9966FF', order: 3 },
+        { name: 'Transport', icon: '🚌', color: '#36A2EB', order: 4 },
+        { name: 'Utilities', icon: '💡', color: '#FF9F40', order: 5 },
+        { name: 'Entertainment', icon: '🎮', color: '#4BC0C0', order: 6 },
+        { name: 'Shopping', icon: '🛍️ ', color: '#FF6B6B', order: 7 },
+        { name: 'Other', icon: '📦', color: '#C9CBCF', order: 8 },
     ]
 
     for (const category of categories) {

@@ -26,6 +26,7 @@ model Category {
   name     String    @unique
   icon     String
   color    String
+  order    Int       @default(0) 
   expenses Expense[]
   budgets  Budget[]
 
