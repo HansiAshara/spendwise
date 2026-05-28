@@ -47,6 +47,7 @@ export default function LoginPage() {
     const router = useRouter()
     const { login } = useAuthStore()       // global auth state setter
     const { toasts, addToast, removeToast } = useToast()
+    
     const [isLoading, setIsLoading] = useState(false)
 
     // react-hook-form setup
