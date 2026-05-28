@@ -28,12 +28,14 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     error?: string   // error message shown below (red)
     hint?: string   // hint message shown below (gray)
     leftIcon?: React.ReactNode  // icon inside left side
+    rightIcon?: React.ReactNode  // icon inside right side
+    onRightIconClick?: () => void  // callback for right icon click
 }
 
 // forwardRef is needed so react-hook-form can
 // attach its ref to the actual <input> element
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-    ({ label, error, hint, leftIcon, className = '', ...props }, ref) => {
+    ({ label, error, hint, leftIcon, rightIcon, onRightIconClick, className = '', ...props }, ref) => {
         return (
             <div className="flex flex-col">
 
@@ -44,7 +46,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     </label>
                 )}
 
-                {/* Input wrapper — needed for left icon positioning */}
+                {/* Input wrapper — needed for left/right icon positioning */}
                 <div className="relative">
 
                     {/* Left icon (optional) */}
@@ -64,10 +66,24 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                             form-input
                             ${error ? 'error' : ''}
                             ${leftIcon ? 'pl-9' : ''}
+                            ${rightIcon ? 'pr-9' : ''}
                             ${className}
                         `}
                         {...props}
                     />
+
+                    {/* Right icon (optional) */}
+                    {rightIcon && (
+                        <button
+                            type="button"
+                            onClick={onRightIconClick}
+                            className="absolute right-3 top-1/2 -translate-y-1/2"
+                            style={{ color: 'var(--ink-faint)', cursor: 'pointer', padding: '4px' }}
+                            tabIndex={-1}
+                        >
+                            {rightIcon}
+                        </button>
+                    )}
                 </div>
 
                 {/* Error message — shown in red when error exists */}
