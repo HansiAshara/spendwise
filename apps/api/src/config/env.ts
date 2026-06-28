@@ -46,4 +46,7 @@ export const env = {
     // Helper to check if we're in development mode
     isDev: process.env.NODE_ENV === 'development',
     isProd: process.env.NODE_ENV === 'production',
+
+    // Gemini API — required for insights feature
+    geminiKey: requireEnv('GEMINI_API_KEY'),
 }

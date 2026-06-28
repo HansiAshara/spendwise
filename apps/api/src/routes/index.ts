@@ -12,11 +12,12 @@
 // ============================================
 
 import { Router } from 'express'
-import authRoutes  from './auth.routes' 
-import expenseRoutes  from './expense.routes'
-import budgetRoutes   from './budget.routes'
+import authRoutes from './auth.routes'
+import expenseRoutes from './expense.routes'
+import budgetRoutes from './budget.routes'
 import analyticsRoutes from './analytics.routes'
-import categoryRoutes    from './category.routes'
+import categoryRoutes from './category.routes'
+import insightRoutes from './insights.routes'
 
 const router = Router()
 
@@ -41,12 +42,13 @@ router.get('/health', (req, res) => {
 // import analyticsRoutes from './analytics.routes'
 // import exportRoutes   from './export.routes'
 //
-router.use('/auth',      authRoutes)
-router.use('/expenses',  expenseRoutes)
-router.use('/budgets',   budgetRoutes)
-// router.use('/insights',  insightRoutes)
+router.use('/auth', authRoutes)
+router.use('/expenses', expenseRoutes)
+router.use('/budgets', budgetRoutes)
+router.use('/insights', insightRoutes)
 router.use('/analytics', analyticsRoutes)
 // router.use('/export',    exportRoutes)
-router.use('/categories', categoryRoutes) 
+router.use('/categories', categoryRoutes)
+
 
 export default router
