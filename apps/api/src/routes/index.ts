@@ -18,6 +18,7 @@ import budgetRoutes from './budget.routes'
 import analyticsRoutes from './analytics.routes'
 import categoryRoutes from './category.routes'
 import insightRoutes from './insights.routes'
+import exportRoutes from './export.routes'
 
 const router = Router()
 
@@ -34,20 +35,12 @@ router.get('/health', (req, res) => {
 
 // ── Feature Routes ───────────────────────────────────
 // We will uncomment these as we build each feature:
-//
-//import authRoutes     from './auth.routes'
-// import expenseRoutes  from './expense.routes' -uncommit
-// import budgetRoutes   from './budget.routes'
-// import insightRoutes  from './insights.routes'
-// import analyticsRoutes from './analytics.routes'
-// import exportRoutes   from './export.routes'
-//
 router.use('/auth', authRoutes)
 router.use('/expenses', expenseRoutes)
 router.use('/budgets', budgetRoutes)
 router.use('/insights', insightRoutes)
 router.use('/analytics', analyticsRoutes)
-// router.use('/export',    exportRoutes)
+router.use('/export',    exportRoutes)
 router.use('/categories', categoryRoutes)
 
 
