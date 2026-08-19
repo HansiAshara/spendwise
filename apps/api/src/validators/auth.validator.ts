@@ -64,6 +64,28 @@ export const updateProfileSchema = z.object({
         .optional(),
 })
 
+// ── Change Password Schema ───────────────────────────
+export const changePasswordSchema = z.object({
+    currentPassword: z
+        .string()
+        .min(1, 'Current password is required'),
+
+    newPassword: z
+        .string()
+        .min(6, 'New password must be at least 6 characters')
+        .max(100, 'Password is too long'),
+})
+
+// ── Delete Account Schema ────────────────────────────
+export const deleteAccountSchema = z.object({
+    password: z
+        .string()
+        .min(1, 'Password is required'),
+})
+
+export type ChangePasswordInput = z.infer<typeof changePasswordSchema>
+export type DeleteAccountInput = z.infer<typeof deleteAccountSchema>
+
 // Export TypeScript types inferred from schemas
 // Use these types in controllers and services
 export type RegisterInput = z.infer<typeof registerSchema>

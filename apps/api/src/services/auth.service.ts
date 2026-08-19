@@ -147,3 +147,66 @@ export async function updateProfile(
 
     return updatedUser
 }
+
+// ── Change Password ───────────────────────────────────
+export async function changePassword(
+    userId: number,
+    currentPassword: string,
+    newPassword: string
+) {
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+
+    if (!user) {
+        throw new Error('User not found')
+    }
+
+    // Verify current password is correct before allowing change
+    const isValid = await comparePassword(currentPassword, user.passwordHash)
+    if (!isValid) {
+        throw new Error('Current password is incorrect')
+    }
+
+    // Hash and save the new password
+    const newHash = await hashPassword(newPassword)
+    await prisma.user.update({
+        where: { id: userId },
+        data: { passwordHash: newHash },
+    })
+
+    return { message: 'Password changed successfully' }
+}
+
+// ── Update Currency Preference ────────────────────────
+export async function updateCurrency(userId: number, currency: string) {
+    const user = await prisma.user.update({
+        where: { id: userId },
+        data: { currency },
+        select: {
+            id: true, name: true, email: true,
+            currency: true, createdAt: true,
+        },
+    })
+    return user
+}
+
+// ── Delete Account ─────────────────────────────────────
+export async function deleteAccount(userId: number, password: string) {
+    const user = await prisma.user.findUnique({ where: { id: userId } })
+
+    if (!user) {
+        throw new Error('User not found')
+    }
+
+    // Verify password before permanent deletion
+    const isValid = await comparePassword(password, user.passwordHash)
+    if (!isValid) {
+        throw new Error('Password is incorrect')
+    }
+
+    // Delete user — cascade deletes expenses and budgets too
+    // (onDelete: Cascade is set in schema.prisma)
+    await prisma.user.delete({ where: { id: userId } })
+
+    return { message: 'Account deleted successfully' }
+}
+

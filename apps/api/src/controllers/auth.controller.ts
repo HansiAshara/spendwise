@@ -104,3 +104,46 @@ export async function updateMe(req: Request, res: Response): Promise<void> {
         sendError(res, message, status)
     }
 }
+
+// ── Change Password ───────────────────────────────────
+// PATCH /api/auth/change-password
+export async function changePassword(req: Request, res: Response): Promise<void> {
+    try {
+        const { currentPassword, newPassword } = req.body
+        const result = await AuthService.changePassword(
+            req.user!.userId, currentPassword, newPassword
+        )
+        sendSuccess(res, result, 'Password changed successfully')
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to change password'
+        const status = message.includes('incorrect') ? 401 : 400
+        sendError(res, message, status)
+    }
+}
+
+// ── Update Currency ────────────────────────────────────
+// PATCH /api/auth/currency
+export async function updateCurrency(req: Request, res: Response): Promise<void> {
+    try {
+        const { currency } = req.body
+        const user = await AuthService.updateCurrency(req.user!.userId, currency)
+        sendSuccess(res, { user }, 'Currency updated successfully')
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to update currency'
+        sendError(res, message, 400)
+    }
+}
+
+// ── Delete Account ─────────────────────────────────────
+// DELETE /api/auth/me
+export async function deleteAccount(req: Request, res: Response): Promise<void> {
+    try {
+        const { password } = req.body
+        const result = await AuthService.deleteAccount(req.user!.userId, password)
+        sendSuccess(res, result, 'Account deleted successfully')
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to delete account'
+        const status = message.includes('incorrect') ? 401 : 400
+        sendError(res, message, status)
+    }
+}

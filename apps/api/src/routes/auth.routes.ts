@@ -13,7 +13,7 @@
 import { Router } from 'express'
 import { validate } from '../middleware/validate.middleware'
 import { protect } from '../middleware/auth.middleware'
-import { registerSchema, loginSchema, updateProfileSchema } from '../validators/auth.validator'
+import { registerSchema, loginSchema, updateProfileSchema, changePasswordSchema, deleteAccountSchema } from '../validators/auth.validator'
 import * as AuthController from '../controllers/auth.controller'
 
 const router = Router()
@@ -57,6 +57,29 @@ router.patch(
     protect,                          // 1. verify JWT token
     validate(updateProfileSchema),    // 2. validate body
     AuthController.updateMe           // 3. run controller
+)
+
+// PATCH /api/auth/change-password
+router.patch(
+    '/change-password',
+    protect,
+    validate(changePasswordSchema),
+    AuthController.changePassword
+)
+
+// PATCH /api/auth/currency
+router.patch(
+    '/currency',
+    protect,
+    AuthController.updateCurrency
+)
+
+// DELETE /api/auth/me
+router.delete(
+    '/me',
+    protect,
+    validate(deleteAccountSchema),
+    AuthController.deleteAccount
 )
 
 export default router
