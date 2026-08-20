@@ -147,3 +147,37 @@ export async function deleteAccount(req: Request, res: Response): Promise<void> 
         sendError(res, message, status)
     }
 }
+
+// ── Update Avatar ──────────────────────────────────────
+export async function updateAvatar(req: Request, res: Response): Promise<void> {
+    try {
+        const { avatarUrl } = req.body
+        const user = await AuthService.updateAvatar(req.user!.userId, avatarUrl)
+        sendSuccess(res, { user }, 'Avatar updated successfully')
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to update avatar'
+        sendError(res, message, 400)
+    }
+}
+
+// ── Update Notifications ────────────────────────────────
+export async function updateNotifications(req: Request, res: Response): Promise<void> {
+    try {
+        const user = await AuthService.updateNotifications(req.user!.userId, req.body)
+        sendSuccess(res, { user }, 'Notification preferences updated')
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to update notifications'
+        sendError(res, message, 400)
+    }
+}
+
+// ── Get Account Stats ────────────────────────────────────
+export async function getAccountStats(req: Request, res: Response): Promise<void> {
+    try {
+        const stats = await AuthService.getAccountStats(req.user!.userId)
+        sendSuccess(res, stats, 'Stats fetched successfully')
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to fetch stats'
+        sendError(res, message, 400)
+    }
+}

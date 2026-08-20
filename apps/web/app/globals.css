@@ -666,3 +666,15 @@ select.form-input {
   max-width: 280px;
   line-height: 1.6;
 }
+
+/* ── Dark theme (early preview) ─────────────────────── */
+[data-theme="dark"] {
+  --page-bg:      #0F172A;
+  --card-bg:      #1E293B;
+  --hover-bg:     #334155;
+  --ink-primary:   #F1F5F9;
+  --ink-secondary: #CBD5E1;
+  --ink-muted:     #94A3B8;
+  --ink-faint:     #64748B;
+  --ink-border:    #334155;
+}

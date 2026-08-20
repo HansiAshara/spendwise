@@ -11,7 +11,11 @@ export interface User {
     name: string
     email: string
     currency: string   // "LKR" default
+    avatarUrl: string | null
     createdAt: string
+    notifyBudgetAlerts:  boolean
+    notifyWeeklySummary: boolean
+    notifyMonthlyReport: boolean
 }
 
 // ── Category ──────────────────────────────────────────

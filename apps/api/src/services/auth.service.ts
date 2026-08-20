@@ -103,7 +103,11 @@ export async function getCurrentUser(userId: number) {
             name: true,
             email: true,
             currency: true,
+            avatarUrl: true,
             createdAt: true,
+            notifyBudgetAlerts: true,
+            notifyWeeklySummary: true,
+            notifyMonthlyReport: true,
         },
     })
 
@@ -141,7 +145,11 @@ export async function updateProfile(
             name: true,
             email: true,
             currency: true,
+            avatarUrl: true,
             createdAt: true,
+            notifyBudgetAlerts: true,
+            notifyWeeklySummary: true,
+            notifyMonthlyReport: true,
         },
     })
 
@@ -210,3 +218,58 @@ export async function deleteAccount(userId: number, password: string) {
     return { message: 'Account deleted successfully' }
 }
 
+// ── Update Avatar ──────────────────────────────────────
+export async function updateAvatar(userId: number, avatarUrl: string) {
+    const user = await prisma.user.update({
+        where: { id: userId },
+        data: { avatarUrl },
+        select: {
+            id: true, name: true, email: true, currency: true,
+            avatarUrl: true, createdAt: true,
+            notifyBudgetAlerts: true, notifyWeeklySummary: true, notifyMonthlyReport: true,
+        },
+    })
+    return user
+}
+
+// ── Update Notification Preferences ────────────────────
+export async function updateNotifications(
+    userId: number,
+    prefs: { notifyBudgetAlerts: boolean; notifyWeeklySummary: boolean; notifyMonthlyReport: boolean }
+) {
+    const user = await prisma.user.update({
+        where: { id: userId },
+        data: prefs,
+        select: {
+            id: true, name: true, email: true, currency: true,
+            avatarUrl: true, createdAt: true,
+            notifyBudgetAlerts: true, notifyWeeklySummary: true, notifyMonthlyReport: true,
+        },
+    })
+    return user
+}
+
+// ── Get Account Stats ───────────────────────────────────
+export async function getAccountStats(userId: number) {
+    // Run counts in parallel
+    const [expenseCount, budgetCount, user] = await Promise.all([
+        prisma.expense.count({ where: { userId } }),
+        prisma.budget.count({ where: { userId } }),
+        prisma.user.findUnique({ where: { id: userId }, select: { createdAt: true } }),
+    ])
+
+    // Calculate months since joining
+    const joinedDate = user?.createdAt || new Date()
+    const monthsAgo = Math.max(
+        1,
+        (new Date().getFullYear() - joinedDate.getFullYear()) * 12 +
+        (new Date().getMonth() - joinedDate.getMonth())
+    )
+
+    return {
+        expenseCount,
+        budgetCount,
+        memberMonths: monthsAgo,
+        joinedDate,
+    }
+}

@@ -91,3 +91,18 @@ export type DeleteAccountInput = z.infer<typeof deleteAccountSchema>
 export type RegisterInput = z.infer<typeof registerSchema>
 export type LoginInput = z.infer<typeof loginSchema>
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>
+
+// ── Avatar Schema ─────────────────────────────────────
+export const updateAvatarSchema = z.object({
+    avatarUrl: z.string().min(1, 'Avatar image is required'),
+})
+
+// ── Notification Preferences Schema ───────────────────
+export const updateNotificationsSchema = z.object({
+    notifyBudgetAlerts: z.boolean(),
+    notifyWeeklySummary: z.boolean(),
+    notifyMonthlyReport: z.boolean(),
+})
+
+export type UpdateAvatarInput = z.infer<typeof updateAvatarSchema>
+export type UpdateNotificationsInput = z.infer<typeof updateNotificationsSchema>

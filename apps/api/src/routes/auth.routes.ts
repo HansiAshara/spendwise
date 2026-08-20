@@ -13,7 +13,7 @@
 import { Router } from 'express'
 import { validate } from '../middleware/validate.middleware'
 import { protect } from '../middleware/auth.middleware'
-import { registerSchema, loginSchema, updateProfileSchema, changePasswordSchema, deleteAccountSchema } from '../validators/auth.validator'
+import { registerSchema, loginSchema, updateProfileSchema, changePasswordSchema, deleteAccountSchema, updateAvatarSchema, updateNotificationsSchema, } from '../validators/auth.validator'
 import * as AuthController from '../controllers/auth.controller'
 
 const router = Router()
@@ -81,5 +81,9 @@ router.delete(
     validate(deleteAccountSchema),
     AuthController.deleteAccount
 )
+
+router.patch('/avatar', protect, validate(updateAvatarSchema), AuthController.updateAvatar)
+router.patch('/notifications', protect, validate(updateNotificationsSchema), AuthController.updateNotifications)
+router.get('/stats', protect, AuthController.getAccountStats)
 
 export default router
