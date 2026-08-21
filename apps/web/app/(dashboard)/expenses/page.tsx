@@ -132,7 +132,7 @@ export default function ExpensesPage() {
             />
 
             {/* ── Summary Cards ─────────────────────────────── */}
-            <div style={{
+            <div className="metric-grid-responsive" style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(4, 1fr)',
                 gap: '16px',

@@ -122,7 +122,7 @@ export default function Sidebar() {
 
     return (
         <aside style={{
-            width: '220px',
+            width: '256px',
             minHeight: '100vh',
             backgroundColor: 'var(--navy)',
             display: 'flex',
@@ -135,7 +135,6 @@ export default function Sidebar() {
             zIndex: 40,
             borderRight: '1px solid rgba(255,255,255,0.06)',
         }}>
-
             {/* ── Logo ──────────────────────────────────── */}
             <div style={{
                 padding: '20px 16px 16px',

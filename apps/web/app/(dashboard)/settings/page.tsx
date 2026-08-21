@@ -47,7 +47,7 @@ export default function SettingsPage() {
                 </div>
             )}
 
-            <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: '20px', alignItems: 'start' }}>
+            <div className="settings-grid-responsive" style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: '20px', alignItems: 'start' }}>
                 <SettingsNav active={section} onChange={setSection} />
 
                 <div>

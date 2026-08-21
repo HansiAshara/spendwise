@@ -48,7 +48,7 @@ export default function ExportPage() {
                 subtitle="Download your expense data as PDF or CSV"
             />
 
-            <div style={{
+            <div className="export-grid-responsive" style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 320px',
                 gap: '20px',

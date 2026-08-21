@@ -678,3 +678,35 @@ select.form-input {
   --ink-faint:     #64748B;
   --ink-border:    #334155;
 }
+
+@media (max-width: 900px) {
+  /* Any 4-column metric grid becomes 2 columns */
+  .metric-grid-responsive {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  /* Any 2-column chart/section grid becomes 1 column */
+  .two-col-responsive {
+    grid-template-columns: 1fr !important;
+  }
+  /* Settings nav + content stacks vertically */
+  .settings-grid-responsive {
+    grid-template-columns: 1fr !important;
+  }
+  /* Export page grid stacks vertically */
+  .export-grid-responsive {
+    grid-template-columns: 1fr !important;
+  }
+  /* Tables scroll horizontally instead of squashing */
+  .table-container {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .metric-grid-responsive {
+    grid-template-columns: 1fr !important;
+  }
+  .page-title-responsive {
+    font-size: 20px !important;
+  }
+}

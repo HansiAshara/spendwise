@@ -95,13 +95,13 @@ export default function DashboardLayout({
     return (
         <div style={{ display: 'flex', minHeight: '100vh' }}>
 
-            {/* Fixed sidebar — 220px wide */}
+            {/* Fixed sidebar — 256px wide */}
             <Sidebar />
 
             {/* Main area — offset by sidebar width */}
             <div style={{
                 flex: 1,
-                marginLeft: '220px',
+                marginLeft: '256px',
                 display: 'flex',
                 flexDirection: 'column',
                 minHeight: '100vh',
@@ -118,12 +118,18 @@ export default function DashboardLayout({
                         padding: '28px',
                         overflowY: 'auto',
                     }}
-                    className="page-animate"
+                    className="page-animate dashboard-main"
                 >
                     {children}
                 </main>
 
             </div>
+            <style>{`
+                @media (max-width: 900px) {
+                    .dashboard-content { margin-left: 0 !important; }
+                    .dashboard-main    { padding: 20px 16px !important; padding-top: 64px !important; }
+                }
+            `}</style>
         </div>
     )
 }

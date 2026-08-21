@@ -46,7 +46,7 @@ function SummaryCards({
     ]
 
     return (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '16px' }}>
+        <div className="metric-grid-responsive" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '16px' }}>
             {cards.map(card => (
                 <div key={card.label} className="card" style={{ padding: '18px' }}>
                     <div style={{ fontSize: '12px', color: 'var(--ink-muted)', marginBottom: '8px' }}>
@@ -183,7 +183,7 @@ export default function DashboardPage() {
             />
 
             {/* ── Row 2: Donut + Bar charts ─────────────────── */}
-            <div style={{
+            <div className="two-col-responsive" style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr',
                 gap: '16px',
@@ -226,7 +226,7 @@ export default function DashboardPage() {
             </div>
 
             {/* ── Row 4: Recent expenses + AI tip ───────────── */}
-            <div style={{
+            <div className="two-col-responsive" style={{
                 display: 'grid',
                 gridTemplateColumns: '1.4fr 1fr',
                 gap: '16px',
