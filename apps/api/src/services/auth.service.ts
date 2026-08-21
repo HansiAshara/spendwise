@@ -16,6 +16,7 @@ import { hashPassword, comparePassword } from '../utils/hash'
 import { signToken } from '../utils/jwt'
 import { RegisterInput, LoginInput } from '../validators/auth.validator'
 import cloudinary from '../config/cloudinary'
+import crypto from 'crypto'
 
 // ── Register ─────────────────────────────────────────
 // Creates a new user account
@@ -221,9 +222,11 @@ export async function deleteAccount(userId: number, password: string) {
 
 // ── Update Avatar ──────────────────────────────────────
 export async function updateAvatar(userId: number, base64Image: string) {
+    const randomId = crypto.randomBytes(16).toString('hex')
+
     const uploadResult = await cloudinary.uploader.upload(base64Image, {
         folder: 'spendwise/avatars',
-        public_id: `user_${userId}`,
+        public_id: `avatar_${randomId}`,   // e.g. avatar_a3f9c81b2e...
         overwrite: true,
         transformation: [
             { width: 200, height: 200, crop: 'fill', gravity: 'face' },
