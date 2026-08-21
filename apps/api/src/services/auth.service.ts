@@ -15,6 +15,7 @@ import prisma from '../config/database'
 import { hashPassword, comparePassword } from '../utils/hash'
 import { signToken } from '../utils/jwt'
 import { RegisterInput, LoginInput } from '../validators/auth.validator'
+import cloudinary from '../config/cloudinary'
 
 // ── Register ─────────────────────────────────────────
 // Creates a new user account
@@ -219,19 +220,29 @@ export async function deleteAccount(userId: number, password: string) {
 }
 
 // ── Update Avatar ──────────────────────────────────────
-export async function updateAvatar(userId: number, avatarUrl: string) {
+export async function updateAvatar(userId: number, base64Image: string) {
+    const uploadResult = await cloudinary.uploader.upload(base64Image, {
+        folder: 'spendwise/avatars',
+        public_id: `user_${userId}`,
+        overwrite: true,
+        transformation: [
+            { width: 200, height: 200, crop: 'fill', gravity: 'face' },
+            { quality: 'auto', fetch_format: 'auto' },
+        ],
+    })
+
     const user = await prisma.user.update({
         where: { id: userId },
-        data: { avatarUrl },
+        data: { avatarUrl: uploadResult.secure_url },
         select: {
             id: true, name: true, email: true, currency: true,
             avatarUrl: true, createdAt: true,
             notifyBudgetAlerts: true, notifyWeeklySummary: true, notifyMonthlyReport: true,
         },
     })
+
     return user
 }
-
 // ── Update Notification Preferences ────────────────────
 export async function updateNotifications(
     userId: number,

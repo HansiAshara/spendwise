@@ -9,7 +9,9 @@ export function useSettings() {
     const { user, setUser, logout } = useAuthStore()
 
     const [profileLoading, setProfileLoading] = useState(false)
+    const [avatarLoading, setAvatarLoading] = useState(false)
     const [passwordLoading, setPasswordLoading] = useState(false)
+    const [notificationsLoading, setNotificationsLoading] = useState(false)
     const [currencyLoading, setCurrencyLoading] = useState(false)
     const [deleteLoading, setDeleteLoading] = useState(false)
 
@@ -35,6 +37,36 @@ export function useSettings() {
             return { success: false, message: err.response?.data?.message || 'Failed to change password' }
         } finally {
             setPasswordLoading(false)
+        }
+    }
+
+    const updateAvatar = async (base64: string) => {
+        setAvatarLoading(true)
+        try {
+            const res = await api.patch('/api/auth/avatar', { avatarUrl: base64 })
+            setUser(res.data.data.user)
+            return { success: true, message: 'Avatar updated successfully' }
+        } catch (err: any) {
+            return { success: false, message: err.response?.data?.message || 'Failed to update avatar' }
+        } finally {
+            setAvatarLoading(false)
+        }
+    }
+
+    const updateNotifications = async (prefs: {
+        notifyBudgetAlerts: boolean
+        notifyWeeklySummary: boolean
+        notifyMonthlyReport: boolean
+    }) => {
+        setNotificationsLoading(true)
+        try {
+            const res = await api.patch('/api/auth/notifications', prefs)
+            setUser(res.data.data.user)
+            return { success: true, message: 'Notification preferences updated' }
+        } catch (err: any) {
+            return { success: false, message: err.response?.data?.message || 'Failed to update notifications' }
+        } finally {
+            setNotificationsLoading(false)
         }
     }
 
@@ -66,7 +98,17 @@ export function useSettings() {
 
     return {
         user,
-        profileLoading, passwordLoading, currencyLoading, deleteLoading,
-        updateProfile, changePassword, updateCurrency, deleteAccount,
+        profileLoading,
+        avatarLoading,
+        passwordLoading,
+        notificationsLoading,
+        currencyLoading,
+        deleteLoading,
+        updateProfile,
+        updateAvatar,
+        changePassword,
+        updateNotifications,
+        updateCurrency,
+        deleteAccount,
     }
 }

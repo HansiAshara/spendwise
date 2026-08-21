@@ -18,15 +18,23 @@ export default function SettingsPage() {
 
     const {
         user,
-        profileLoading, passwordLoading, currencyLoading, deleteLoading,
-        updateProfile, changePassword, updateCurrency, deleteAccount,
+        profileLoading,
+        avatarLoading,
+        passwordLoading,
+        notificationsLoading,
+        currencyLoading,
+        deleteLoading,
+        updateProfile,
+        updateAvatar,
+        changePassword,
+        updateNotifications,
+        updateCurrency,
+        deleteAccount,
     } = useSettings()
 
     const { toasts, addToast, removeToast } = useToast()
     const showToast = addToast
     const toast = toasts[0]
-    const updateAvatar = async (_base64: string) => ({ success: false, message: 'Not implemented' })
-    const updateNotifications = async (..._args: any[]) => ({ success: false, message: 'Not implemented' })
 
     return (
         <div className="page-animate">
@@ -38,7 +46,7 @@ export default function SettingsPage() {
                 <div>
                     {section === 'profile' && (
                         <ProfileSection
-                            user={user} loading={profileLoading} avatarLoading={false}
+                            user={user} loading={profileLoading} avatarLoading={avatarLoading}
                             stats={null} statsLoading={false}
                             onSubmit={updateProfile} onAvatarUpload={updateAvatar} onToast={showToast}
                         />
@@ -47,7 +55,7 @@ export default function SettingsPage() {
                         <PasswordSection loading={passwordLoading} onSubmit={changePassword} onToast={showToast} />
                     )}
                     {section === 'notifications' && (
-                        <NotificationsSection user={user} loading={false} onSubmit={updateNotifications} onToast={showToast} />
+                        <NotificationsSection user={user} loading={notificationsLoading} onSubmit={updateNotifications} onToast={showToast} />
                     )}
                     {section === 'currency' && (
                         <CurrencySection user={user} loading={currencyLoading} onSubmit={updateCurrency} onToast={showToast} />

@@ -15,8 +15,7 @@ model User {
   currency     String    @default("LKR")
 
   
-  avatarUrl    String?   @db.Text
-  
+  avatarUrl    String?   
   notifyBudgetAlerts  Boolean @default(true)
   notifyWeeklySummary Boolean @default(false)
   notifyMonthlyReport Boolean @default(true)
