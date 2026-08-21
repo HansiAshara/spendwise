@@ -8,6 +8,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import NetworkStatus from '@/components/ui/NetworkStatus'
 
 // Load Inter font via Next.js font system
 // This is the correct way in Next.js 13+
@@ -31,6 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <body className={`${inter.className} antialiased`}>
+        <NetworkStatus />
         {children}
       </body>
     </html>

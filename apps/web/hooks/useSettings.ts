@@ -1,7 +1,7 @@
 // ============================================
 // useSettings Hook
 // ============================================
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import api from '@/lib/api'
 import { useAuthStore } from '@/store/useAuthStore'
 
@@ -14,6 +14,15 @@ export function useSettings() {
     const [notificationsLoading, setNotificationsLoading] = useState(false)
     const [currencyLoading, setCurrencyLoading] = useState(false)
     const [deleteLoading, setDeleteLoading] = useState(false)
+    const [loadError, setLoadError] = useState<string | null>(null)
+
+    useEffect(() => {
+        if (!user) {
+            setLoadError('Unable to load your profile. Please try logging in again.')
+        } else {
+            setLoadError(null)
+        }
+    }, [user])
 
     const updateProfile = async (data: { name?: string; email?: string }) => {
         setProfileLoading(true)
@@ -110,5 +119,6 @@ export function useSettings() {
         updateNotifications,
         updateCurrency,
         deleteAccount,
+        loadError,
     }
 }

@@ -18,6 +18,7 @@ export default function SettingsPage() {
 
     const {
         user,
+        loadError,
         profileLoading,
         avatarLoading,
         passwordLoading,
@@ -39,6 +40,12 @@ export default function SettingsPage() {
     return (
         <div className="page-animate">
             <PageHeader title="Settings" subtitle="Manage your account and preferences" />
+
+            {loadError && (
+                <div className="alert alert-danger" style={{ marginBottom: '16px' }}>
+                    {loadError}
+                </div>
+            )}
 
             <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: '20px', alignItems: 'start' }}>
                 <SettingsNav active={section} onChange={setSection} />
