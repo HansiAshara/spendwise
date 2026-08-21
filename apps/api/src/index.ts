@@ -68,7 +68,10 @@ async function startServer() {
 		process.exit(1)
 	}
 }
+if (require.main === module) {
+	void startServer()
+}
 
-startServer()
+
 
 export default app
