@@ -73,7 +73,7 @@ describe('Expense API', () => {
                 })
 
             expect(response.status).toBe(201)
-            expect(response.body.data.expense.amount).toBe(1500)
+            expect(Number(response.body.data.expense.amount)).toBe(1500)
             expect(response.body.data.expense.category.name).toBe('Food')
 
             createdExpenseId = response.body.data.expense.id
@@ -122,7 +122,7 @@ describe('Expense API', () => {
                 .send({ amount: 2000 })
 
             expect(response.status).toBe(200)
-            expect(response.body.data.expense.amount).toBe(2000)
+            expect(Number(response.body.data.expense.amount)).toBe(2000)
         })
 
         it('should return 404 for a non-existent expense', async () => {

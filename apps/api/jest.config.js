@@ -24,4 +24,7 @@ module.exports = {
 
     // Wait max 10 seconds per test before failing
     testTimeout: 10000,
+
+    //to make tests run in sequential, not in parralel
+    maxWorkers: 1,
 }
