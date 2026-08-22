@@ -35,16 +35,22 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: apps/api/package-lock.json
+          cache-dependency-path: package-lock.json
 
+      # Install from ROOT — this installs all workspaces (api + web) in one go
       - name: Install dependencies
-        working-directory: apps/api
         run: npm install
 
-      - name: Create test database
+      - name: Install SQL Server command line tools
         run: |
-          sudo apt-get update && sudo apt-get install -y mssql-tools18 unixodbc-dev
-          /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "CIPassword@2025" -C -Q "CREATE DATABASE spendwise_test"
+          curl https://packages.microsoft.com/keys/microsoft.asc | sudo tee /etc/apt/trusted.gpg.d/microsoft.asc
+          curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
+          sudo apt-get update
+          sudo ACCEPT_EULA=Y apt-get install -y mssql-tools18 unixodbc-dev
+          echo "/opt/mssql-tools18/bin" >> $GITHUB_PATH
+
+      - name: Create test database
+        run: sqlcmd -S localhost -U sa -P "CIPassword@2025" -C -Q "CREATE DATABASE spendwise_test"
 
       - name: Setup database schema
         working-directory: apps/api
@@ -89,10 +95,10 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: apps/web/package-lock.json
+          cache-dependency-path: package-lock.json
 
+      # Install from ROOT — same reasoning as above
       - name: Install dependencies
-        working-directory: apps/web
         run: npm install
 
       - name: Build frontend
