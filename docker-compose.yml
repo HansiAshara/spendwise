@@ -1,0 +1,64 @@
+# ============================================
+# Docker Compose — Local Development
+# ============================================
+# Runs BOTH the API and MS SQL Server together
+# with one command: docker-compose up
+#
+# This means anyone cloning your repo can run
+# the ENTIRE backend + database without installing
+# SQL Server manually on their machine.
+# ============================================
+
+version: '3.8'
+
+services:
+
+  # ── MS SQL Server ────────────────────────────────
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: spendwise-mssql
+    environment:
+      ACCEPT_EULA:        "Y"                    # required by Microsoft
+      MSSQL_SA_PASSWORD:  "SpendWise@2025"        # container-only password
+      MSSQL_PID:           "Express"               # free edition
+    ports:
+      - "14330:1433"    # expose SQL Server port to your machine
+    volumes:
+      # Persist database data even if container restarts
+      - mssql_data:/var/opt/mssql
+    healthcheck:
+      # Docker waits until SQL Server is ACTUALLY ready
+      # before starting the API — prevents connection errors
+      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "SpendWise@2025" -C -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout:  5s
+      retries:  10
+      start_period: 30s   # give SQL Server time to boot up first
+
+  # ── Backend API ───────────────────────────────────
+  api:
+    build:
+      context:    ./apps/api
+      dockerfile: Dockerfile
+    container_name: spendwise-api
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV:      production
+      PORT:          5000
+      CORS_ORIGIN:   http://localhost:3000
+      # Connect to the mssql SERVICE NAME, not localhost
+      # Docker containers talk to each other by service name
+      DATABASE_URL:  "sqlserver://mssql:1433;database=spendwise;user=sa;password=SpendWise@2025;trustServerCertificate=true"
+      JWT_SECRET:        "docker-dev-jwt-secret-change-in-real-deployment"
+      JWT_EXPIRES_IN:    "7d"
+      GEMINI_API_KEY:    "${GEMINI_API_KEY}"        # pulled from your .env
+      CLOUDINARY_CLOUD_NAME: "${CLOUDINARY_CLOUD_NAME}"
+      CLOUDINARY_API_KEY:    "${CLOUDINARY_API_KEY}"
+      CLOUDINARY_API_SECRET: "${CLOUDINARY_API_SECRET}"
+    depends_on:
+      mssql:
+        condition: service_healthy   # wait for DB healthcheck to pass first
+
+volumes:
+  mssql_data:   # named volume — data survives container restarts

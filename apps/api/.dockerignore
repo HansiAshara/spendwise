@@ -1,0 +1,18 @@
+# ============================================
+# Docker Ignore
+# ============================================
+# Files Docker should NOT copy into the container.
+# Keeps the image small and avoids leaking secrets.
+# ============================================
+
+node_modules
+dist
+.env
+.env.test
+.env.local
+*.log
+.git
+.gitignore
+README.md
+coverage
+__tests__
