@@ -68,9 +68,13 @@ async function startServer() {
 		process.exit(1)
 	}
 }
-if (require.main === module) {
-	void startServer()
-}
+
+// Connect to database when this module loads
+// Works for both traditional server AND serverless environments
+prisma.$connect()
+	.then(() => console.log('✅ Database connected'))
+    .catch((err) => console.error('❌ Database connection failed:', err))
+
 
 
 
