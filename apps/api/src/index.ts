@@ -36,6 +36,11 @@ app.use(express.json())                         // parse JSON bodies
 app.use(express.urlencoded({ extended: true })) // parse form data
 
 // ── API Routes ───────────────────────────────────────
+// Root status check
+app.get('/', (req, res) => {
+	res.json({ message: 'SpendWise API is running!' })
+})
+
 // All routes are prefixed with /api
 // e.g. /api/health, /api/auth/login, /api/expenses
 app.use('/api', router)
@@ -50,37 +55,9 @@ app.use(notFoundHandler)
 // IMPORTANT: must be LAST middleware in the whole file
 app.use(errorHandler)
 
-// ── Start Server ─────────────────────────────────────
-async function startServer() {
-	try {
-		// Connect to database first before accepting any requests
-		await prisma.$connect()
-		console.log('✅ Database connected')
-
-		app.listen(env.port, () => {
-			console.log(`🚀 API running   → http://localhost:${env.port}`)
-			console.log(`📋 Health check  → http://localhost:${env.port}/api/health`)
-			console.log(`🌍 Environment   → ${env.nodeEnv}`)
-		})
-	} catch (error) {
-		// If DB connection fails, stop the server completely
-		console.error('❌ Failed to start server:', error)
-		process.exit(1)
-	}
-}
-
 // Connect to database when this module loads
-// Works for both traditional server AND serverless environments
 prisma.$connect()
 	.then(() => console.log('✅ Database connected'))
 	.catch((err) => console.error('❌ Database connection failed:', err))
-
-
-
-app.get('/', (req, res) => {
-	res.json({ message: 'SpendWise API is running!' })
-})
-
-
 
 export default app
