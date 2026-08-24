@@ -36,7 +36,7 @@ export default function Navbar({ title, subtitle }: NavbarProps) {
     return (
         <header style={{
             height: '60px',
-            backgroundColor: 'white',
+            backgroundColor: 'var(--card-bg)',
             borderBottom: '1px solid var(--ink-border)',
             display: 'flex',
             alignItems: 'center',
@@ -100,7 +100,7 @@ export default function Navbar({ title, subtitle }: NavbarProps) {
                     width: '34px', height: '34px',
                     borderRadius: '50%',
                     border: '1px solid var(--ink-border)',
-                    background: 'white',
+                    background: 'var(--card-bg)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     cursor: 'pointer',
                     color: 'var(--ink-muted)',

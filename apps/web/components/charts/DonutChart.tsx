@@ -94,14 +94,14 @@ export default function DonutChart({ data, loading }: DonutChartProps) {
 
                     // "TOTAL" label
                     ctx.font = '500 11px Inter, sans-serif'
-                    ctx.fillStyle = '#94A3B8'
+                    ctx.fillStyle = isDark ? '#94A3B8' : '#64748B'
                     ctx.textAlign = 'center'
                     ctx.textBaseline = 'middle'
                     ctx.fillText('TOTAL', centerX, centerY - 12)
 
                     // Amount value
-                    ctx.font = '600 16px Inter, sans-serif'
-                    ctx.fillStyle = '#0F172A'
+                    ctx.font = '600 15px Inter, sans-serif'
+                    ctx.fillStyle = isDark ? '#F8FAFC' : '#0F172A'
                     ctx.fillText(formatLKRCompact(grandTotal), centerX, centerY + 10)
 
                     ctx.restore()
