@@ -119,16 +119,12 @@ export function useExport() {
             const params = new URLSearchParams({ startDate, endDate })
             if (categoryId) params.append('categoryId', categoryId)
 
-            const token = localStorage.getItem('spendwise_token')
+            const response = await api.get(`/api/export/${format}?${params}`, {
+                responseType: 'blob',
+            })
 
-            const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/export/${format}?${params}`,
-                { headers: { Authorization: `Bearer ${token}` } }
-            )
-
-            if (!response.ok) throw new Error('Download failed')
-
-            const blob = await response.blob()
+            const mimeType = format === 'pdf' ? 'application/pdf' : 'text/csv'
+            const blob = new Blob([response.data], { type: mimeType })
             const url = window.URL.createObjectURL(blob)
             const link = document.createElement('a')
             const filename = `spendwise-${format === 'pdf' ? 'report' : 'expenses'}-${new Date().toISOString().split('T')[0]}.${format}`
@@ -142,8 +138,9 @@ export function useExport() {
 
             return { success: true, message: `${format.toUpperCase()} downloaded successfully!` }
 
-        } catch {
-            return { success: false, message: 'Download failed. Please try again.' }
+        } catch (err: any) {
+            const errorMsg = err?.friendlyMessage || err?.message || 'Download failed. Please try again.'
+            return { success: false, message: errorMsg }
         } finally {
             setDownloading(false)
         }

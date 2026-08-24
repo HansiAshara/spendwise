@@ -41,6 +41,7 @@ app.use(cors({
 		return callback(null, true); // Allow all Vercel origins during dev/prod setup
 	},
 	credentials: true,            // allow cookies and auth headers
+	exposedHeaders: ['Content-Disposition', 'Content-Type', 'Content-Length'],
 }))
 
 // ── Logging Middleware ───────────────────────────────
