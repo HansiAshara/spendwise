@@ -90,6 +90,8 @@ export default function DonutChart({ data, loading }: DonutChartProps) {
                     const centerX = (left + right) / 2
                     const centerY = (top + bottom) / 2
 
+                    const isDark = typeof document !== 'undefined' && document.documentElement.dataset.theme === 'dark'
+
                     ctx.save()
 
                     // "TOTAL" label
