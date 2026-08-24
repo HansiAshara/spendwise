@@ -38,11 +38,9 @@ export function formatLKRShort(amount: number): string {
     }).format(amount)
 }
 
-// Compact format — e.g. 150000 → "LKR 150K"
+// Compact format — formatted exact values (e.g. 1550 -> "LKR 1,550")
 export function formatLKRCompact(amount: number): string {
-    if (amount >= 1_000_000) return `LKR ${(amount / 1_000_000).toFixed(1)}M`
-    if (amount >= 1_000) return `LKR ${(amount / 1_000).toFixed(0)}K`
-    return `LKR ${amount.toFixed(0)}`
+    return formatLKRShort(amount)
 }
 
 // ── Date formatters ───────────────────────────────────
