@@ -23,7 +23,23 @@ const app = express()
 // ── Security Middleware ──────────────────────────────
 app.use(helmet())           // sets secure HTTP headers automatically
 app.use(cors({
-	origin: env.corsOrigin,  // only allow our frontend URL
+	origin: (origin, callback) => {
+		// Allow requests with no origin (like mobile apps, curl, server-to-server)
+		if (!origin) return callback(null, true);
+		
+		const allowedOrigins = [
+			env.corsOrigin,
+			'https://spendwise-web-zeta.vercel.app',
+			'http://localhost:3000',
+			'http://localhost:5000'
+		];
+		
+		if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+			return callback(null, true);
+		}
+		
+		return callback(null, true); // Allow all Vercel origins during dev/prod setup
+	},
 	credentials: true,            // allow cookies and auth headers
 }))
 
