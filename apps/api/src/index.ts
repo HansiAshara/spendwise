@@ -73,8 +73,13 @@ async function startServer() {
 // Works for both traditional server AND serverless environments
 prisma.$connect()
 	.then(() => console.log('✅ Database connected'))
-    .catch((err) => console.error('❌ Database connection failed:', err))
+	.catch((err) => console.error('❌ Database connection failed:', err))
 
+
+
+app.get('/', (req, res) => {
+	res.json({ message: 'SpendWise API is running!' })
+})
 
 
 
