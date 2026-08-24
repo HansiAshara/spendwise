@@ -228,11 +228,17 @@ textarea {
   padding: 9px 12px;
   font-size: 13px;
   color: var(--ink-primary);
-  background-color: white;
+  background-color: var(--card-bg);
   border: 1px solid var(--ink-border);
   border-radius: 8px;
   transition: border-color 0.15s, box-shadow 0.15s;
   font-family: inherit;
+  color-scheme: light dark;
+}
+
+.form-input option {
+  background-color: var(--card-bg);
+  color: var(--ink-primary);
 }
 
 .form-input:focus {
@@ -669,11 +675,12 @@ select.form-input {
 
 /* ── Dark theme (early preview) ─────────────────────── */
 [data-theme="dark"] {
-  --page-bg:      #0F172A;
+  color-scheme: dark;
+  --page-bg:      #0B0F19;
   --card-bg:      #1E293B;
   --hover-bg:     #334155;
-  --ink-primary:   #F1F5F9;
-  --ink-secondary: #CBD5E1;
+  --ink-primary:   #F8FAFC;
+  --ink-secondary: #E2E8F0;
   --ink-muted:     #94A3B8;
   --ink-faint:     #64748B;
   --ink-border:    #334155;
