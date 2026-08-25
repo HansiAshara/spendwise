@@ -51,7 +51,7 @@ export default function DateRangePicker({
                             padding: '5px 12px',
                             borderRadius: '20px',
                             border: '1px solid var(--ink-border)',
-                            background: 'white',
+                            background: 'var(--card-bg)',
                             fontSize: '12px',
                             color: 'var(--ink-secondary)',
                             cursor: 'pointer',

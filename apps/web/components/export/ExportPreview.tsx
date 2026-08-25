@@ -43,10 +43,10 @@ export default function ExportPreview({ preview, loading, startDate, endDate }: 
                         alignItems: 'center',
                         gap: '10px',
                         padding: '12px',
-                        background: preview.count > 0 ? 'var(--primary-50)' : 'var(--page-bg)',
+                        background: preview.count > 0 ? 'rgba(99, 102, 241, 0.12)' : 'var(--hover-bg)',
                         borderRadius: '10px',
                         marginBottom: '10px',
-                        border: `1px solid ${preview.count > 0 ? 'rgba(99,102,241,0.2)' : 'var(--ink-border)'}`,
+                        border: `1px solid ${preview.count > 0 ? 'rgba(99,102,241,0.25)' : 'var(--ink-border)'}`,
                     }}>
                         <div style={{ fontSize: '22px' }}>
                             {preview.count > 0 ? '📋' : '📭'}
@@ -55,7 +55,7 @@ export default function ExportPreview({ preview, loading, startDate, endDate }: 
                             <div style={{
                                 fontSize: '18px',
                                 fontWeight: '700',
-                                color: preview.count > 0 ? 'var(--primary-600)' : 'var(--ink-muted)',
+                                color: preview.count > 0 ? 'var(--primary-500)' : 'var(--ink-muted)',
                             }}>
                                 {preview.count} transaction{preview.count !== 1 ? 's' : ''}
                             </div>
@@ -72,7 +72,7 @@ export default function ExportPreview({ preview, loading, startDate, endDate }: 
                             justifyContent: 'space-between',
                             alignItems: 'center',
                             padding: '10px 12px',
-                            background: 'var(--page-bg)',
+                            background: 'var(--hover-bg)',
                             borderRadius: '8px',
                             border: '1px solid var(--ink-border)',
                             marginBottom: '10px',

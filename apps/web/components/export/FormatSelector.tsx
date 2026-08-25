@@ -59,7 +59,7 @@ export default function FormatSelector({ format, onChange }: FormatSelectorProps
                                 padding: '16px',
                                 borderRadius: '12px',
                                 border: `2px solid ${isSelected ? 'var(--primary-500)' : 'var(--ink-border)'}`,
-                                background: isSelected ? 'var(--primary-50)' : 'white',
+                                background: isSelected ? 'rgba(99, 102, 241, 0.12)' : 'var(--card-bg)',
                                 cursor: 'pointer',
                                 textAlign: 'left',
                                 transition: 'all 0.15s',
@@ -70,7 +70,7 @@ export default function FormatSelector({ format, onChange }: FormatSelectorProps
                             <div style={{
                                 fontSize: '14px',
                                 fontWeight: '600',
-                                color: isSelected ? 'var(--primary-600)' : 'var(--ink-primary)',
+                                color: isSelected ? 'var(--primary-500)' : 'var(--ink-primary)',
                                 marginBottom: '4px',
                             }}>
                                 {option.title}
