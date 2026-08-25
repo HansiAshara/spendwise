@@ -16,6 +16,26 @@ export default function PasswordSection({ loading, onSubmit, onToast }: Password
     const [confirmPassword, setConfirmPassword] = useState('')
     const [errors, setErrors] = useState<Record<string, string>>({})
 
+    const [showCurrentPassword, setShowCurrentPassword] = useState(false)
+    const [showNewPassword, setShowNewPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
+    const renderEyeIcon = (show: boolean) => (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            {show ? (
+                <>
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                </>
+            ) : (
+                <>
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1 4.24 4.24" />
+                    <line x1="1" y1="1" x2="23" y2="23" />
+                </>
+            )}
+        </svg>
+    )
+
     const getStrength = (pwd: string) => {
         if (!pwd) return { label: '', color: 'transparent', width: '0%' }
         if (pwd.length < 6) return { label: 'Too short', color: 'var(--danger)', width: '25%' }
@@ -59,16 +79,26 @@ export default function PasswordSection({ loading, onSubmit, onToast }: Password
             <form onSubmit={handleSubmit}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '380px' }}>
                     <Input
-                        label="Current password" type="password"
-                        value={currentPassword} onChange={e => setCurrentPassword(e.target.value)}
-                        error={errors.currentPassword} autoComplete="current-password"
+                        label="Current password"
+                        type={showCurrentPassword ? 'text' : 'password'}
+                        value={currentPassword}
+                        onChange={e => setCurrentPassword(e.target.value)}
+                        error={errors.currentPassword}
+                        autoComplete="current-password"
+                        rightIcon={renderEyeIcon(showCurrentPassword)}
+                        onRightIconClick={() => setShowCurrentPassword(!showCurrentPassword)}
                     />
 
                     <div>
                         <Input
-                            label="New password" type="password"
-                            value={newPassword} onChange={e => setNewPassword(e.target.value)}
-                            error={errors.newPassword} autoComplete="new-password"
+                            label="New password"
+                            type={showNewPassword ? 'text' : 'password'}
+                            value={newPassword}
+                            onChange={e => setNewPassword(e.target.value)}
+                            error={errors.newPassword}
+                            autoComplete="new-password"
+                            rightIcon={renderEyeIcon(showNewPassword)}
+                            onRightIconClick={() => setShowNewPassword(!showNewPassword)}
                         />
                         {newPassword && (
                             <div style={{ marginTop: '8px' }}>
@@ -83,9 +113,14 @@ export default function PasswordSection({ loading, onSubmit, onToast }: Password
                     </div>
 
                     <Input
-                        label="Confirm new password" type="password"
-                        value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}
-                        error={errors.confirmPassword} autoComplete="new-password"
+                        label="Confirm new password"
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        value={confirmPassword}
+                        onChange={e => setConfirmPassword(e.target.value)}
+                        error={errors.confirmPassword}
+                        autoComplete="new-password"
+                        rightIcon={renderEyeIcon(showConfirmPassword)}
+                        onRightIconClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     />
 
                     <Button type="submit" variant="primary" size="md" loading={loading} style={{ alignSelf: 'flex-start' }}>
