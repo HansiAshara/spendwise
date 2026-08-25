@@ -48,7 +48,12 @@ export function useBudgets() {
     const fetchCategories = useCallback(async () => {
         try {
             const res = await api.get('/api/categories')
-            setCategories(res.data.data.categories)
+            const sortedCategories = (res.data.data.categories as Category[]).sort((a, b) => {
+                if (a.name.toLowerCase() === 'other') return 1
+                if (b.name.toLowerCase() === 'other') return -1
+                return a.name.localeCompare(b.name)
+            })
+            setCategories(sortedCategories)
         } catch {
             console.error('Failed to fetch categories')
         }

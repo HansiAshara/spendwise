@@ -55,7 +55,14 @@ export function useExport() {
     // ── Fetch categories once on mount ─────────────
     useEffect(() => {
         api.get('/api/categories')
-            .then(res => setCategories(res.data.data.categories))
+            .then(res => {
+                const sortedCategories = (res.data.data.categories as Category[]).sort((a, b) => {
+                    if (a.name.toLowerCase() === 'other') return 1
+                    if (b.name.toLowerCase() === 'other') return -1
+                    return a.name.localeCompare(b.name)
+                })
+                setCategories(sortedCategories)
+            })
             .catch(() => { })
     }, [])
 

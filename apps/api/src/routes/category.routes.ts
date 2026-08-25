@@ -23,8 +23,15 @@ router.use(protect)
 // Returns all categories with icon and color
 router.get('/', async (req, res) => {
     try {
-        const categories = await prisma.category.findMany({
-            orderBy: { name: 'asc' }, // use our custom display order
+        const rawCategories = await prisma.category.findMany({
+            orderBy: { name: 'asc' },
+        })
+
+        // Sort alphabetically, but keep 'Other' at the very end
+        const categories = rawCategories.sort((a, b) => {
+            if (a.name.toLowerCase() === 'other') return 1
+            if (b.name.toLowerCase() === 'other') return -1
+            return a.name.localeCompare(b.name)
         })
 
         sendSuccess(res, { categories }, 'Categories fetched successfully')
