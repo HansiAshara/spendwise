@@ -15,7 +15,9 @@ model User {
   passwordHash String
   currency     String    @default("LKR")
 
-  
+  resetTokenHash   String?
+  resetTokenExpiry DateTime?
+
   avatarUrl    String?   
   notifyBudgetAlerts  Boolean @default(true)
   notifyWeeklySummary Boolean @default(false)
