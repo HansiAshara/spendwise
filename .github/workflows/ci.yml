@@ -12,19 +12,19 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      mssql:
-        image: mcr.microsoft.com/mssql/server:2022-latest
+      postgres:
+        image: postgres:15-alpine
         env:
-          ACCEPT_EULA: "Y"
-          MSSQL_SA_PASSWORD: "CIPassword@2025"
-          MSSQL_PID: "Express"
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: CIPassword2025
+          POSTGRES_DB: spendwise_test
         ports:
-          - 1433:1433
+          - 5432:5432
         options: >-
-          --health-cmd "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P CIPassword@2025 -C -Q 'SELECT 1' || exit 1"
+          --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
-          --health-retries 10
+          --health-retries 5
 
     steps:
       - name: Checkout repository
@@ -41,27 +41,16 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install SQL Server command line tools
-        run: |
-          curl https://packages.microsoft.com/keys/microsoft.asc | sudo tee /etc/apt/trusted.gpg.d/microsoft.asc
-          curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
-          sudo apt-get update
-          sudo ACCEPT_EULA=Y apt-get install -y mssql-tools18 unixodbc-dev
-          echo "/opt/mssql-tools18/bin" >> $GITHUB_PATH
-
-      - name: Create test database
-        run: sqlcmd -S localhost -U sa -P "CIPassword@2025" -C -Q "CREATE DATABASE spendwise_test"
-
       - name: Setup database schema
         working-directory: apps/api
         env:
-          DATABASE_URL: "sqlserver://localhost:1433;database=spendwise_test;user=sa;password=CIPassword@2025;trustServerCertificate=true"
+          DATABASE_URL: "postgresql://postgres:CIPassword2025@localhost:5432/spendwise_test"
         run: npx prisma db push
 
       - name: Seed database
         working-directory: apps/api
         env:
-          DATABASE_URL: "sqlserver://localhost:1433;database=spendwise_test;user=sa;password=CIPassword@2025;trustServerCertificate=true"
+          DATABASE_URL: "postgresql://postgres:CIPassword2025@localhost:5432/spendwise_test"
         run: npx tsx prisma/seed.ts
 
       - name: Type check
@@ -72,7 +61,7 @@ jobs:
         working-directory: apps/api
         env:
           NODE_ENV: test
-          DATABASE_URL: "sqlserver://localhost:1433;database=spendwise_test;user=sa;password=CIPassword@2025;trustServerCertificate=true"
+          DATABASE_URL: "postgresql://postgres:CIPassword2025@localhost:5432/spendwise_test"
           JWT_SECRET: "ci-test-secret"
           JWT_EXPIRES_IN: "7d"
           CORS_ORIGIN: "http://localhost:3000"
