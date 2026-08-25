@@ -8,6 +8,9 @@ import { useAuthStore } from '@/store/useAuthStore'
 export function useSettings() {
     const { user, setUser, logout } = useAuthStore()
 
+    const [stats, setStats] = useState<{ expenseCount: number; budgetCount: number; memberMonths: number } | null>(null)
+    const [statsLoading, setStatsLoading] = useState(true)
+
     const [profileLoading, setProfileLoading] = useState(false)
     const [avatarLoading, setAvatarLoading] = useState(false)
     const [passwordLoading, setPasswordLoading] = useState(false)
@@ -23,6 +26,26 @@ export function useSettings() {
             setLoadError(null)
         }
     }, [user])
+
+    useEffect(() => {
+        let isMounted = true
+        setStatsLoading(true)
+        api.get('/api/auth/stats')
+            .then(res => {
+                if (isMounted) {
+                    setStats(res.data.data)
+                }
+            })
+            .catch(() => { })
+            .finally(() => {
+                if (isMounted) {
+                    setStatsLoading(false)
+                }
+            })
+        return () => {
+            isMounted = false
+        }
+    }, [])
 
     const updateProfile = async (data: { name?: string; email?: string }) => {
         setProfileLoading(true)
@@ -107,6 +130,8 @@ export function useSettings() {
 
     return {
         user,
+        stats,
+        statsLoading,
         profileLoading,
         avatarLoading,
         passwordLoading,

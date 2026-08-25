@@ -18,6 +18,8 @@ export default function SettingsPage() {
 
     const {
         user,
+        stats,
+        statsLoading,
         loadError,
         profileLoading,
         avatarLoading,
@@ -54,7 +56,7 @@ export default function SettingsPage() {
                     {section === 'profile' && (
                         <ProfileSection
                             user={user} loading={profileLoading} avatarLoading={avatarLoading}
-                            stats={null} statsLoading={false}
+                            stats={stats} statsLoading={statsLoading}
                             onSubmit={updateProfile} onAvatarUpload={updateAvatar} onToast={showToast}
                         />
                     )}

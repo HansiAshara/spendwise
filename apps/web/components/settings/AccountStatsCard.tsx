@@ -31,14 +31,15 @@ export default function AccountStatsCard({ stats, loading }: AccountStatsCardPro
             {items.map(item => (
                 <div key={item.label} style={{
                     display: 'flex', alignItems: 'center', gap: '10px',
-                    padding: '10px 12px', background: 'var(--page-bg)', borderRadius: '10px',
+                    padding: '10px 12px', background: 'var(--hover-bg)', borderRadius: '10px',
+                    border: '1px solid var(--ink-border)',
                 }}>
                     <div style={{ fontSize: '18px' }}>{item.icon}</div>
                     <div>
                         <div style={{ fontSize: '15px', fontWeight: '700', color: 'var(--ink-primary)' }}>
                             {loading ? <span className="skeleton" style={{ display: 'inline-block', width: '30px', height: '16px' }} /> : item.value}
                         </div>
-                        <div style={{ fontSize: '10px', color: 'var(--ink-muted)' }}>{item.label}</div>
+                        <div style={{ fontSize: '11px', color: 'var(--ink-secondary)', fontWeight: '500' }}>{item.label}</div>
                     </div>
                 </div>
             ))}
