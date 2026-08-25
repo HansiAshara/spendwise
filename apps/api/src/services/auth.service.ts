@@ -353,3 +353,9 @@ export async function resetPassword(rawToken: string, newPassword: string) {
 
     return { message: 'Password reset successfully. You can now log in.' }
 }
+
+// ── Check if email is registered ──────────────────────
+export async function checkEmailExists(email: string) {
+    const user = await prisma.user.findUnique({ where: { email } })
+    return { exists: !!user }
+}

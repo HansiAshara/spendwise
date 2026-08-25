@@ -204,3 +204,15 @@ export async function resetPassword(req: Request, res: Response): Promise<void> 
         sendError(res, message, 400)
     }
 }
+
+// ── Check Email Exists ─────────────────────────────────
+export async function checkEmail(req: Request, res: Response): Promise<void> {
+    try {
+        const email = req.body.email || req.query.email
+        const result = await AuthService.checkEmailExists(String(email))
+        sendSuccess(res, result)
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to check email'
+        sendError(res, message, 400)
+    }
+}

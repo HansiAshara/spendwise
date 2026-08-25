@@ -114,4 +114,10 @@ router.post(
     AuthController.resetPassword
 )
 
+router.post(
+    '/check-email',
+    validate(forgotPasswordSchema),
+    AuthController.checkEmail
+)
+
 export default router

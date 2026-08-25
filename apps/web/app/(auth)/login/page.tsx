@@ -50,11 +50,9 @@ export default function LoginPage() {
     
     const [isLoading, setIsLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
+    const [isCheckingEmail, setIsCheckingEmail] = useState(false)
 
     // react-hook-form setup
-    // register — connects input to form
-    // handleSubmit — validates before calling our function
-    // formState.errors — validation error messages
     const {
         register,
         handleSubmit,
@@ -66,7 +64,7 @@ export default function LoginPage() {
         resolver: zodResolver(loginSchema), // use zod for validation
     })
 
-    // Validate email before navigating to forgot password page
+    // Validate email & check registration before navigating to forgot password page
     const handleForgotPassword = async (e: React.MouseEvent) => {
         e.preventDefault()
         const isEmailValid = await trigger('email')
@@ -80,7 +78,25 @@ export default function LoginPage() {
             return
         }
 
-        router.push(`/forgot-password?email=${encodeURIComponent(emailValue)}`)
+        setIsCheckingEmail(true)
+        try {
+            const res = await api.post('/api/auth/check-email', { email: emailValue })
+            if (res.data?.data?.exists) {
+                router.push(`/forgot-password?email=${encodeURIComponent(emailValue)}`)
+            } else {
+                setError('email', {
+                    type: 'manual',
+                    message: 'This email is not registered. Please sign up first.',
+                })
+            }
+        } catch {
+            setError('email', {
+                type: 'manual',
+                message: 'Unable to verify email address. Please try again.',
+            })
+        } finally {
+            setIsCheckingEmail(false)
+        }
     }
 
     // Called when form is submitted AND validation passes
@@ -202,18 +218,20 @@ export default function LoginPage() {
                         <button
                             type="button"
                             onClick={handleForgotPassword}
+                            disabled={isCheckingEmail}
                             style={{
                                 background: 'none',
                                 border: 'none',
                                 padding: 0,
                                 fontSize: '12px',
                                 color: 'var(--primary-500)',
-                                cursor: 'pointer',
+                                cursor: isCheckingEmail ? 'wait' : 'pointer',
                                 fontWeight: '500',
                                 fontFamily: 'inherit',
+                                opacity: isCheckingEmail ? 0.7 : 1,
                             }}
                         >
-                            Forgot password?
+                            {isCheckingEmail ? 'Checking email...' : 'Forgot password?'}
                         </button>
                     </div>
 
