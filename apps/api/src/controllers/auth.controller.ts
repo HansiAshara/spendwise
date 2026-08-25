@@ -181,3 +181,26 @@ export async function getAccountStats(req: Request, res: Response): Promise<void
         sendError(res, message, 400)
     }
 }
+
+// ── Forgot Password ────────────────────────────────────
+export async function forgotPassword(req: Request, res: Response): Promise<void> {
+    try {
+        const result = await AuthService.forgotPassword(req.body.email)
+        sendSuccess(res, result, result.message)
+    } catch (error) {
+        // Never reveal specific errors here — always a generic message
+        sendSuccess(res, {}, 'If that email exists, a reset link has been sent')
+    }
+}
+
+// ── Reset Password ─────────────────────────────────────
+export async function resetPassword(req: Request, res: Response): Promise<void> {
+    try {
+        const { token, newPassword } = req.body
+        const result = await AuthService.resetPassword(token, newPassword)
+        sendSuccess(res, result, result.message)
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to reset password'
+        sendError(res, message, 400)
+    }
+}

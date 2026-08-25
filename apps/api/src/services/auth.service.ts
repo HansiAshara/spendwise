@@ -17,6 +17,7 @@ import { signToken } from '../utils/jwt'
 import { RegisterInput, LoginInput } from '../validators/auth.validator'
 import cloudinary from '../config/cloudinary'
 import crypto from 'crypto'
+import { sendPasswordResetEmail } from '../config/mailer'
 
 // ── Register ─────────────────────────────────────────
 // Creates a new user account
@@ -286,4 +287,69 @@ export async function getAccountStats(userId: number) {
         memberMonths: monthsAgo,
         joinedDate,
     }
+}
+
+// ── Forgot Password — generate and email token ────────
+export async function forgotPassword(email: string) {
+    const user = await prisma.user.findUnique({ where: { email } })
+
+    // IMPORTANT: always return success even if user doesn't exist
+    // This prevents attackers from discovering which emails are registered
+    if (!user) {
+        return { message: 'If that email exists, a reset link has been sent' }
+    }
+
+    // Generate a random raw token (sent in email, never stored directly)
+    const rawToken = crypto.randomBytes(32).toString('hex')
+
+    // Hash it before storing — same principle as password hashing
+    const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex')
+
+    // Token expires in 15 minutes
+    const expiry = new Date(Date.now() + 15 * 60 * 1000)
+
+    await prisma.user.update({
+        where: { id: user.id },
+        data: {
+            resetTokenHash: tokenHash,
+            resetTokenExpiry: expiry,
+        },
+    })
+
+    // Build the reset link using the RAW token (not the hash)
+    const resetLink = `${process.env.FRONTEND_URL}/reset-password/${rawToken}`
+
+    await sendPasswordResetEmail(user.email, user.name, resetLink)
+
+    return { message: 'If that email exists, a reset link has been sent' }
+}
+
+// ── Reset Password — verify token and update ───────────
+export async function resetPassword(rawToken: string, newPassword: string) {
+    // Hash the incoming token the same way we hashed it when storing
+    const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex')
+
+    const user = await prisma.user.findFirst({
+        where: {
+            resetTokenHash: tokenHash,
+            resetTokenExpiry: { gte: new Date() }, // must not be expired
+        },
+    })
+
+    if (!user) {
+        throw new Error('Invalid or expired reset link. Please request a new one.')
+    }
+
+    const newPasswordHash = await hashPassword(newPassword)
+
+    await prisma.user.update({
+        where: { id: user.id },
+        data: {
+            passwordHash: newPasswordHash,
+            resetTokenHash: null,   // clear the token — one-time use only
+            resetTokenExpiry: null,
+        },
+    })
+
+    return { message: 'Password reset successfully. You can now log in.' }
 }

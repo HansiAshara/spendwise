@@ -177,6 +177,21 @@ export default function LoginPage() {
                         {...register('password')}
                     />
 
+                    {/* Forgot password link */}
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '-8px' }}>
+                        <Link
+                            href="/forgot-password"
+                            style={{
+                                fontSize: '12px',
+                                color: 'var(--primary-500)',
+                                textDecoration: 'none',
+                                fontWeight: '500',
+                            }}
+                        >
+                            Forgot password?
+                        </Link>
+                    </div>
+
                     {/* Submit button */}
                     <Button
                         type="submit"

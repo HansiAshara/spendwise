@@ -106,3 +106,26 @@ export const updateNotificationsSchema = z.object({
 
 export type UpdateAvatarInput = z.infer<typeof updateAvatarSchema>
 export type UpdateNotificationsInput = z.infer<typeof updateNotificationsSchema>
+
+// ── Forgot Password Schema ────────────────────────────
+export const forgotPasswordSchema = z.object({
+    email: z
+        .string()
+        .email('Please provide a valid email address')
+        .toLowerCase()
+        .trim(),
+})
+
+// ── Reset Password Schema ─────────────────────────────
+export const resetPasswordSchema = z.object({
+    token: z
+        .string()
+        .min(1, 'Reset token is required'),
+    newPassword: z
+        .string()
+        .min(6, 'Password must be at least 6 characters')
+        .max(100, 'Password is too long'),
+})
+
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>
