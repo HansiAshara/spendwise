@@ -116,8 +116,7 @@ export async function changePassword(req: Request, res: Response): Promise<void>
         sendSuccess(res, result, 'Password changed successfully')
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Failed to change password'
-        const status = message.includes('incorrect') ? 401 : 400
-        sendError(res, message, status)
+        sendError(res, message, 400)
     }
 }
 
@@ -143,8 +142,7 @@ export async function deleteAccount(req: Request, res: Response): Promise<void> 
         sendSuccess(res, result, 'Account deleted successfully')
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Failed to delete account'
-        const status = message.includes('incorrect') ? 401 : 400
-        sendError(res, message, status)
+        sendError(res, message, 400)
     }
 }
 

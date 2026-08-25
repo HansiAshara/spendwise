@@ -39,6 +39,14 @@ export default function DashboardLayout({
         // Only run after component has mounted in browser
         if (!mounted) return
 
+        if (!token) {
+            if (typeof document !== 'undefined') {
+                document.cookie = 'spendwise_token=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;'
+            }
+            router.push('/login')
+            return
+        }
+
         const fetchUser = async () => {
             if (token && !user) {
                 try {
@@ -47,17 +55,16 @@ export default function DashboardLayout({
                     login(fetchedUser, token)
                 } catch {
                     logout()
+                    if (typeof document !== 'undefined') {
+                        document.cookie = 'spendwise_token=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;'
+                    }
                     router.push('/login')
                 }
-            }
-
-            if (!token) {
-                router.push('/login')
             }
         }
 
         fetchUser()
-    }, [mounted, token])
+    }, [mounted, token, user, login, logout, router])
 
     // ── Loading state ─────────────────────────────────
     // Show nothing until client has mounted

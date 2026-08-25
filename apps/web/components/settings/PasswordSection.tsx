@@ -59,11 +59,17 @@ export default function PasswordSection({ loading, onSubmit, onToast }: Password
         e.preventDefault()
         if (!validate()) return
         const result = await onSubmit(currentPassword, newPassword)
-        onToast(result.message, result.success ? 'success' : 'error')
-        if (result.success) {
+        if (!result.success) {
+            if (result.message.toLowerCase().includes('current password') || result.message.toLowerCase().includes('incorrect')) {
+                setErrors(prev => ({ ...prev, currentPassword: result.message }))
+            }
+            onToast(result.message, 'error')
+        } else {
+            onToast(result.message, 'success')
             setCurrentPassword('')
             setNewPassword('')
             setConfirmPassword('')
+            setErrors({})
         }
     }
 
