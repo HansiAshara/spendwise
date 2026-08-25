@@ -58,10 +58,30 @@ export default function LoginPage() {
     const {
         register,
         handleSubmit,
+        trigger,
+        getValues,
+        setError,
         formState: { errors },
     } = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema), // use zod for validation
     })
+
+    // Validate email before navigating to forgot password page
+    const handleForgotPassword = async (e: React.MouseEvent) => {
+        e.preventDefault()
+        const isEmailValid = await trigger('email')
+        const emailValue = getValues('email')
+
+        if (!isEmailValid || !emailValue) {
+            setError('email', {
+                type: 'manual',
+                message: 'Please enter a valid email address first to reset password',
+            })
+            return
+        }
+
+        router.push(`/forgot-password?email=${encodeURIComponent(emailValue)}`)
+    }
 
     // Called when form is submitted AND validation passes
     const onSubmit = async (data: LoginFormData) => {
@@ -179,17 +199,22 @@ export default function LoginPage() {
 
                     {/* Forgot password link */}
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '-8px' }}>
-                        <Link
-                            href="/forgot-password"
+                        <button
+                            type="button"
+                            onClick={handleForgotPassword}
                             style={{
+                                background: 'none',
+                                border: 'none',
+                                padding: 0,
                                 fontSize: '12px',
                                 color: 'var(--primary-500)',
-                                textDecoration: 'none',
+                                cursor: 'pointer',
                                 fontWeight: '500',
+                                fontFamily: 'inherit',
                             }}
                         >
                             Forgot password?
-                        </Link>
+                        </button>
                     </div>
 
                     {/* Submit button */}

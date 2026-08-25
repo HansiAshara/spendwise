@@ -4,10 +4,11 @@
 
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
@@ -20,13 +21,19 @@ const schema = z.object({
 })
 type FormData = z.infer<typeof schema>
 
-export default function ForgotPasswordPage() {
+function ForgotPasswordContent() {
+    const searchParams = useSearchParams()
+    const emailParam = searchParams.get('email') ?? ''
+
     const [submitted, setSubmitted] = useState(false)
     const [loading, setLoading] = useState(false)
     const { toasts, addToast, removeToast } = useToast()
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
         resolver: zodResolver(schema),
+        defaultValues: {
+            email: emailParam,
+        },
     })
 
     const onSubmit = async (data: FormData) => {
@@ -109,5 +116,13 @@ export default function ForgotPasswordPage() {
                 }}
             />
         </>
+    )
+}
+
+export default function ForgotPasswordPage() {
+    return (
+        <Suspense fallback={null}>
+            <ForgotPasswordContent />
+        </Suspense>
     )
 }
