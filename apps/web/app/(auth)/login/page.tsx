@@ -51,6 +51,7 @@ export default function LoginPage() {
     const [isLoading, setIsLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
     const [isCheckingEmail, setIsCheckingEmail] = useState(false)
+    const [apiError, setApiError] = useState<string | null>(null)
 
     // react-hook-form setup
     const {
@@ -102,6 +103,7 @@ export default function LoginPage() {
     // Called when form is submitted AND validation passes
     const onSubmit = async (data: LoginFormData) => {
         setIsLoading(true)
+        setApiError(null)
 
         try {
             // Call backend POST /api/auth/login
@@ -124,8 +126,10 @@ export default function LoginPage() {
         } catch (error: any) {
             // Extract error message from backend response
             const message = error.response?.data?.message
-                || 'Something went wrong. Please try again.'
+                || error.friendlyMessage
+                || 'Invalid email or password. Please try again.'
 
+            setApiError(message)
             addToast(message, 'error')
         } finally {
             setIsLoading(false)
@@ -167,6 +171,14 @@ export default function LoginPage() {
             {/* Login form */}
             {/* handleSubmit wraps our onSubmit — validates first */}
             <form onSubmit={handleSubmit(onSubmit)}>
+                {apiError && (
+                    <div className="alert alert-danger" style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                        </svg>
+                        <span>{apiError}</span>
+                    </div>
+                )}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
                     {/* Email input */}

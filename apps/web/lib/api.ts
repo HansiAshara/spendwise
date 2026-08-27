@@ -47,12 +47,16 @@ api.interceptors.response.use(
     async (error) => {
         const config = error.config
 
-        // Auth expired — redirect to login (existing behavior)
-        if (error.response?.status === 401) {
+        // Auth expired — redirect to login (only for protected routes, not auth endpoints like login/register)
+        const isAuthEndpoint = config?.url?.includes('/api/auth/')
+
+        if (error.response?.status === 401 && !isAuthEndpoint) {
             if (typeof window !== 'undefined') {
                 localStorage.removeItem('spendwise_token')
                 document.cookie = 'spendwise_token=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;'
-                window.location.href = '/login'
+                if (window.location.pathname !== '/login') {
+                    window.location.href = '/login'
+                }
             }
             return Promise.reject(error)
         }
