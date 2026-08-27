@@ -20,7 +20,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title:       'SpendWise — Personal Finance Tracker',
+  title: 'SpendWise',
   description: 'Track expenses, set budgets and get AI-powered saving tips. Built for Sri Lankan students.',
   icons: {
     icon: '/icon.svg',
