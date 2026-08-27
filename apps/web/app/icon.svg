@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="spendwise-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBBF24" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="48" fill="url(#spendwise-grad)" />
+  <g fill="#FFFFFF">
+    <!-- Bag Top/Tie -->
+    <path d="M43 23 C43 20, 57 20, 57 23 L60 29 C57 31, 43 31, 40 29 Z" />
+    <!-- Bag Main Body -->
+    <path d="M34 33 C42 31, 58 31, 66 33 C75 38, 78 52, 75 66 C71 80, 60 84, 50 84 C40 84, 29 80, 25 66 C22 52, 25 38, 34 33 Z" />
+    <!-- Dollar Sign -->
+    <path d="M50 43 C46 43, 44 45, 44 48 C44 52, 56 52, 56 57 C56 61, 53 63, 50 63 C46 63, 44 61, 43 58 M50 39 V66" 
+          stroke="#B45309" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  </g>
+</svg>
