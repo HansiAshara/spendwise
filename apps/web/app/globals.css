@@ -23,6 +23,7 @@
   --page-bg: #F8FAFC;
   --card-bg: #FFFFFF;
   --hover-bg: #F1F5F9;
+  --nav-bg: rgba(255, 255, 255, 0.85);
 
   /* Sidebar */
   --navy: #1E293B;
@@ -129,7 +130,7 @@ textarea {
 
 .card-hover:hover {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
-  border-color: #CBD5E1;
+  border-color: var(--primary-500);
 }
 
 /* ── Buttons ─────────────────────────────────────────── */
@@ -501,7 +502,7 @@ select.form-input {
   height: 28px;
   border-radius: 6px;
   border: 1px solid var(--ink-border);
-  background-color: white;
+  background-color: var(--card-bg);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -679,11 +680,23 @@ select.form-input {
   --page-bg:      #0B0F19;
   --card-bg:      #1E293B;
   --hover-bg:     #334155;
+  --nav-bg:       rgba(11, 15, 25, 0.85);
+  --primary-50:   rgba(99, 102, 241, 0.15);
+  --primary-100:  rgba(99, 102, 241, 0.25);
+  --primary-200:  rgba(99, 102, 241, 0.35);
   --ink-primary:   #F8FAFC;
   --ink-secondary: #E2E8F0;
   --ink-muted:     #94A3B8;
   --ink-faint:     #64748B;
   --ink-border:    #334155;
+
+  /* Semantic dark theme variants */
+  --success-bg:   rgba(16, 185, 129, 0.15);
+  --success-text: #34D399;
+  --warning-bg:   rgba(245, 158, 11, 0.15);
+  --warning-text: #FBBF24;
+  --danger-bg:    rgba(239, 68, 68, 0.15);
+  --danger-text:  #F87171;
 }
 
 @media (max-width: 900px) {

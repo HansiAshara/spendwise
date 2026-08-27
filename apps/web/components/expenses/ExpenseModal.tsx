@@ -149,7 +149,7 @@ export default function ExpenseModal({
                             width: '30px', height: '30px',
                             borderRadius: '50%',
                             border: '1px solid var(--ink-border)',
-                            background: 'white',
+                            background: 'var(--card-bg)',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                             cursor: 'pointer', color: 'var(--ink-muted)',
                             fontSize: '16px', lineHeight: 1,

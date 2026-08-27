@@ -127,7 +127,7 @@ export default function AuthLayout({
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
-                        backgroundColor: 'white',
+                        backgroundColor: 'var(--card-bg)',
                     }}
                 >
                     <div style={{ maxWidth: '360px', width: '100%', margin: '0 auto' }}>

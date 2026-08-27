@@ -13,7 +13,7 @@ import Footer              from '@/components/marketing/Footer'
 
 export default function LandingPage() {
   return (
-    <div style={{ background: 'white' }}>
+    <div style={{ background: 'var(--page-bg)', color: 'var(--ink-primary)', minHeight: '100vh', transition: 'background-color 0.2s, color 0.2s' }}>
       <MarketingNavbar />
       <Hero />
       <FeatureGrid />

@@ -4,7 +4,7 @@
 
 export default function Footer() {
     return (
-        <footer style={{ borderTop: '1px solid var(--ink-border)', padding: '32px 24px' }}>
+        <footer style={{ borderTop: '1px solid var(--ink-border)', padding: '32px 24px', background: 'var(--page-bg)' }}>
             <div style={{
                 maxWidth: '1080px', margin: '0 auto',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',

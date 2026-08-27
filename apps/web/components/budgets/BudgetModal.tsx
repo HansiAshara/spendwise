@@ -158,7 +158,7 @@ export default function BudgetModal({
                             height: '30px',
                             borderRadius: '50%',
                             border: '1px solid var(--ink-border)',
-                            background: 'white',
+                            background: 'var(--card-bg)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',

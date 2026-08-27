@@ -16,8 +16,9 @@ export default function Hero() {
             <div style={{
                 display: 'inline-flex', alignItems: 'center', gap: '6px',
                 padding: '5px 14px', background: 'var(--primary-50)',
+                border: '1px solid var(--ink-border)',
                 borderRadius: '20px', fontSize: '12px', fontWeight: '600',
-                color: 'var(--primary-600)', marginBottom: '24px',
+                color: 'var(--primary-500)', marginBottom: '24px',
             }}>
                 🇱🇰 Built for Sri Lankan students
             </div>

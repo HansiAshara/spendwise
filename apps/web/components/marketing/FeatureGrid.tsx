@@ -31,6 +31,7 @@ export default function FeatureGrid() {
                             background: 'var(--primary-50)', display: 'flex',
                             alignItems: 'center', justifyContent: 'center',
                             fontSize: '20px', marginBottom: '16px',
+                            border: '1px solid var(--ink-border)',
                         }}>{f.icon}</div>
                         <h3 style={{ fontSize: '15px', fontWeight: '600', color: 'var(--ink-primary)', marginBottom: '8px' }}>
                             {f.title}

@@ -58,7 +58,7 @@ export default function InsightTipCard({ tip, index }: InsightTipCardProps) {
     return (
         <div
             style={{
-                background: 'white',
+                background: 'var(--card-bg)',
                 borderRadius: '14px',
                 border: '1px solid var(--ink-border)',
                 borderLeft: `4px solid ${priority.borderColor}`,

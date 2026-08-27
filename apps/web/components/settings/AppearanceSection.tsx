@@ -59,7 +59,7 @@ export default function AppearanceSection() {
                             style={{
                                 padding: '16px 10px', borderRadius: '12px',
                                 border: `2px solid ${isSelected ? 'var(--primary-500)' : 'var(--ink-border)'}`,
-                                background: isSelected ? 'var(--primary-50)' : 'white',
+                                background: isSelected ? 'var(--primary-50)' : 'var(--card-bg)',
                                 cursor: 'pointer', textAlign: 'center', fontFamily: 'inherit',
                                 transition: 'all 0.15s',
                             }}
