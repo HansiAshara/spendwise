@@ -22,6 +22,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   title:       'SpendWise — Personal Finance Tracker',
   description: 'Track expenses, set budgets and get AI-powered saving tips. Built for Sri Lankan students.',
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
+  },
 }
 
 export default function RootLayout({
