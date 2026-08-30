@@ -18,6 +18,9 @@ import { RegisterInput, LoginInput } from '../validators/auth.validator'
 import cloudinary from '../config/cloudinary'
 import crypto from 'crypto'
 import { sendPasswordResetEmail } from '../config/mailer'
+import { OAuth2Client } from 'google-auth-library'
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 
 // ── Register ─────────────────────────────────────────
 // Creates a new user account
@@ -76,6 +79,10 @@ export async function loginUser(data: LoginInput) {
     // Use vague error message — don't tell attacker if email exists
     if (!user) {
         throw new Error('Invalid email or password')
+    }
+
+    if (!user.passwordHash) {
+        throw new Error('This account was created with Google. Please sign in with Google.')
     }
 
     // Step 3: Compare the plain password with stored hash
@@ -171,6 +178,10 @@ export async function changePassword(
         throw new Error('User not found')
     }
 
+    if (!user.passwordHash) {
+        throw new Error('This account was created with Google. Please use forgot password to create a password.')
+    }
+
     // Verify current password is correct before allowing change
     const isValid = await comparePassword(currentPassword, user.passwordHash)
     if (!isValid) {
@@ -208,10 +219,12 @@ export async function deleteAccount(userId: number, password: string) {
         throw new Error('User not found')
     }
 
-    // Verify password before permanent deletion
-    const isValid = await comparePassword(password, user.passwordHash)
-    if (!isValid) {
-        throw new Error('Password is incorrect')
+    // Verify password before permanent deletion if password exists
+    if (user.passwordHash) {
+        const isValid = await comparePassword(password, user.passwordHash)
+        if (!isValid) {
+            throw new Error('Password is incorrect')
+        }
     }
 
     // Delete user — cascade deletes expenses and budgets too
@@ -358,4 +371,65 @@ export async function resetPassword(rawToken: string, newPassword: string) {
 export async function checkEmailExists(email: string) {
     const user = await prisma.user.findUnique({ where: { email } })
     return { exists: !!user }
+}
+
+// ── Google Sign-In ─────────────────────────────────────
+// Verifies the Google ID token, finds or creates the user,
+// returns the same shape as regular login (user + JWT)
+export async function loginWithGoogle(idToken: string) {
+    const clientId = process.env.GOOGLE_CLIENT_ID
+    if (!clientId) {
+        throw new Error('Google Client ID is not configured on the server')
+    }
+
+    // Verify the token is genuinely issued by Google for OUR app
+    const ticket = await googleClient.verifyIdToken({
+        idToken,
+        audience: clientId,
+    })
+
+    const payload = ticket.getPayload()
+    if (!payload || !payload.email) {
+        throw new Error('Invalid Google token')
+    }
+
+    const { email, name, sub: googleId, picture } = payload
+
+    // Check if a user already exists with this email
+    let user = await prisma.user.findUnique({ where: { email } })
+
+    if (user) {
+        // Existing user — link their Google account if not already linked
+        if (!user.googleId) {
+            user = await prisma.user.update({
+                where: { id: user.id },
+                data: {
+                    googleId,
+                    avatarUrl: user.avatarUrl || picture || null,
+                },
+            })
+        }
+    } else {
+        // New user — create account via Google, no password needed
+        user = await prisma.user.create({
+            data: {
+                name: name || 'Google User',
+                email,
+                googleId,
+                authProvider: 'google',
+                avatarUrl: picture || null,
+                currency: 'LKR',
+            },
+        })
+    }
+
+    if (!user) {
+        throw new Error('Unable to authenticate with Google')
+    }
+
+    const token = signToken({ userId: user.id, email: user.email })
+
+    const { passwordHash: _, resetTokenHash: __, ...userWithoutPassword } = user
+
+    return { user: userWithoutPassword, token }
 }

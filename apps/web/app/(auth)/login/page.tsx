@@ -25,6 +25,7 @@ import Toast from '@/components/ui/Toast'
 import { useToast } from '@/hooks/useToast'
 import { useAuthStore } from '@/store/useAuthStore'
 import api from '@/lib/api'
+import GoogleSignInButton from '@/components/auth/GoogleSignInButton'
 
 // ── Validation schema ─────────────────────────────────
 // Same rules as backend — validated on frontend first
@@ -47,7 +48,7 @@ export default function LoginPage() {
     const router = useRouter()
     const { login } = useAuthStore()       // global auth state setter
     const { toasts, addToast, removeToast } = useToast()
-    
+
     const [isLoading, setIsLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
     const [isCheckingEmail, setIsCheckingEmail] = useState(false)
@@ -263,29 +264,31 @@ export default function LoginPage() {
             </form>
 
             {/* Divider */}
-            <div style={{
-                display: 'flex', alignItems: 'center',
-                gap: '12px', margin: '24px 0',
-            }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '24px 0 20px 0' }}>
                 <div style={{ flex: 1, height: '1px', background: 'var(--ink-border)' }} />
-                <span style={{ fontSize: '12px', color: 'var(--ink-faint)' }}>or</span>
+                <span style={{ fontSize: '12px', color: 'var(--ink-faint)' }}>or continue with</span>
                 <div style={{ flex: 1, height: '1px', background: 'var(--ink-border)' }} />
             </div>
 
+            {/* Google Sign In */}
+            <GoogleSignInButton onError={(msg) => addToast(msg, 'error')} />
+
             {/* Register link */}
-            <p style={{ textAlign: 'center', fontSize: '13px', color: 'var(--ink-muted)' }}>
-                Don&apos;t have an account?{' '}
-                <Link
-                    href="/register"
-                    style={{
-                        color: 'var(--primary-500)',
-                        fontWeight: '500',
-                        textDecoration: 'none',
-                    }}
-                >
-                    Create one for free
-                </Link>
-            </p>
+            <div style={{ marginTop: '24px' }}>
+                <p style={{ textAlign: 'center', fontSize: '13px', color: 'var(--ink-muted)' }}>
+                    Don&apos;t have an account?{' '}
+                    <Link
+                        href="/register"
+                        style={{
+                            color: 'var(--primary-500)',
+                            fontWeight: '500',
+                            textDecoration: 'none',
+                        }}
+                    >
+                        Create one for free
+                    </Link>
+                </p>
+            </div>
 
             {/* Toast notification */}
             <Toast

@@ -19,6 +19,7 @@ import Toast from '@/components/ui/Toast'
 import { useToast } from '@/hooks/useToast'
 import { useAuthStore } from '@/store/useAuthStore'
 import api from '@/lib/api'
+import GoogleSignInButton from '@/components/auth/GoogleSignInButton'
 
 // ── Validation schema ─────────────────────────────────
 const registerSchema = z.object({
@@ -58,7 +59,7 @@ type RegisterFormData = z.infer<typeof registerSchema>
 export default function RegisterPage() {
     const router = useRouter()
     const { login } = useAuthStore()
-    const { toasts, success, error } = useToast()
+    const { toasts, success, error: toastError, addToast } = useToast()
     const [isLoading, setIsLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -105,7 +106,7 @@ export default function RegisterPage() {
                 || error.friendlyMessage
                 || 'Registration failed. Please try again.'
             setApiError(message)
-            error(message)
+            toastError(message)
         } finally {
             setIsLoading(false)
         }
@@ -302,17 +303,18 @@ export default function RegisterPage() {
                 </div>
             </form>
 
+            {/* Divider */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '24px 0 20px 0' }}>
+                <div style={{ flex: 1, height: '1px', background: 'var(--ink-border)' }} />
+                <span style={{ fontSize: '12px', color: 'var(--ink-faint)' }}>or continue with</span>
+                <div style={{ flex: 1, height: '1px', background: 'var(--ink-border)' }} />
+            </div>
+
+            {/* Google Sign In */}
+            <GoogleSignInButton onError={(msg) => addToast(msg, 'error')} />
+
             {/* Login link */}
             <div style={{ marginTop: '24px' }}>
-                <div style={{
-                    display: 'flex', alignItems: 'center',
-                    gap: '12px', marginBottom: '16px',
-                }}>
-                    <div style={{ flex: 1, height: '1px', background: 'var(--ink-border)' }} />
-                    <span style={{ fontSize: '12px', color: 'var(--ink-faint)' }}>or</span>
-                    <div style={{ flex: 1, height: '1px', background: 'var(--ink-border)' }} />
-                </div>
-
                 <p style={{ textAlign: 'center', fontSize: '13px', color: 'var(--ink-muted)' }}>
                     Already have an account?{' '}
                     <Link
@@ -345,7 +347,7 @@ export default function RegisterPage() {
                     message={toasts[0].message}
                     type={toasts[0].type === 'success' ? 'success' : 'error'}
                     visible={true}
-                    onClose={() => {}}
+                    onClose={() => { }}
                 />
             )}
         </>

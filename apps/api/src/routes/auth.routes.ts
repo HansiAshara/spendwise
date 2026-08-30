@@ -120,4 +120,8 @@ router.post(
     AuthController.checkEmail
 )
 
+router.post(
+    '/google', AuthController.googleLogin
+)
+
 export default router

@@ -14,9 +14,11 @@ import { useAuthStore } from '@/store/useAuthStore'
 
 export default function MarketingNavbar() {
     const { token } = useAuthStore()
+    const [mounted, setMounted] = useState(false)
     const [theme, setTheme] = useState<'light' | 'dark'>('light')
 
     useEffect(() => {
+        setMounted(true)
         const saved = (localStorage.getItem('spendwise_theme') as 'light' | 'dark' | 'system') || 'light'
         const resolved = saved === 'system'
             ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
@@ -78,7 +80,7 @@ export default function MarketingNavbar() {
                         {theme === 'dark' ? '☀️' : '🌙'}
                     </button>
 
-                    {token ? (
+                    {mounted && token ? (
                         <Link href="/dashboard" className="btn btn-primary btn-sm">Go to Dashboard</Link>
                     ) : (
                         <>

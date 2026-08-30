@@ -214,3 +214,21 @@ export async function checkEmail(req: Request, res: Response): Promise<void> {
         sendError(res, message, 400)
     }
 }
+
+// ── Google Sign-In ─────────────────────────────────────
+export async function googleLogin(req: Request, res: Response): Promise<void> {
+    try {
+        const { idToken } = req.body
+        if (!idToken) {
+            sendError(res, 'Google ID token is required', 400)
+            return
+        }
+
+        const { user, token } = await AuthService.loginWithGoogle(idToken)
+        sendSuccess(res, { user, token }, 'Signed in with Google successfully')
+
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Google sign-in failed'
+        sendError(res, message, 401)
+    }
+}
