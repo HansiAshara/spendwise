@@ -12,7 +12,9 @@ model User {
   id           Int       @id @default(autoincrement())
   name         String
   email        String    @unique
-  passwordHash String
+  passwordHash String?
+  googleId     String?   @unique 
+  authProvider String    @default("local") 
   currency     String    @default("LKR")
 
   resetTokenHash   String?
