@@ -24,6 +24,7 @@ import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/store/useAuthStore'
 import { getInitials } from '@/lib/utils'
 import api from '@/lib/api'
+import Logo from '@/components/ui/Logo'
 
 // Navigation items configuration
 // Adding a new page = just add an item here
@@ -141,31 +142,7 @@ export default function Sidebar() {
                 borderBottom: '1px solid rgba(255,255,255,0.06)',
             }}>
                 <Link href="/dashboard" style={{ textDecoration: 'none' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        {/* Logo icon */}
-                        <div style={{
-                            width: '34px', height: '34px',
-                            background: 'linear-gradient(135deg, var(--primary-500), var(--primary-400))',
-                            borderRadius: '9px',
-                            display: 'flex', alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '17px',
-                            boxShadow: '0 2px 8px rgba(99,102,241,0.4)',
-                        }}>
-                            💰
-                        </div>
-                        <div>
-                            <div style={{
-                                fontSize: '15px', fontWeight: '600',
-                                color: 'white', letterSpacing: '-0.3px',
-                            }}>
-                                SpendWise
-                            </div>
-                            <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)' }}>
-                                Personal Finance
-                            </div>
-                        </div>
-                    </div>
+                    <Logo size={34} withText textColor="white" subtextColor="rgba(255,255,255,0.45)" />
                 </Link>
             </div>
 

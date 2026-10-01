@@ -6,6 +6,8 @@
 // wide screens. Centered as a whole on the page.
 // ============================================
 
+import Logo from '@/components/ui/Logo'
+
 export default function AuthLayout({
     children,
 }: {
@@ -61,20 +63,14 @@ export default function AuthLayout({
                         position: 'relative',
                     }}>
                         {/* Logo */}
-                        <div style={{ marginBottom: '40px', position: 'relative' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                                <div style={{
-                                    width: '38px', height: '38px', background: 'rgba(255,255,255,0.2)',
-                                    borderRadius: '10px', display: 'flex', alignItems: 'center',
-                                    justifyContent: 'center', fontSize: '19px',
-                                }}>
-                                    💰
-                                </div>
-                                <span style={{ fontSize: '20px', fontWeight: '600', color: 'white', letterSpacing: '-0.5px' }}>
+                        <div style={{ marginBottom: '36px', position: 'relative' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                                <Logo size={42} />
+                                <span style={{ fontSize: '22px', fontWeight: '700', color: 'white', letterSpacing: '-0.5px' }}>
                                     SpendWise
                                 </span>
                             </div>
-                            <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.65)', lineHeight: '1.6' }}>
+                            <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)', lineHeight: '1.6' }}>
                                 Personal finance tracker built for Sri Lankan students and young adults.
                             </p>
                         </div>

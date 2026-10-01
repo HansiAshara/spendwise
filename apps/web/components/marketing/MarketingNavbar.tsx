@@ -11,6 +11,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useAuthStore } from '@/store/useAuthStore'
+import Logo from '@/components/ui/Logo'
 
 export default function MarketingNavbar() {
     const { token } = useAuthStore()
@@ -46,13 +47,9 @@ export default function MarketingNavbar() {
                 padding: '14px 24px',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             }}>
-                <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
-                    <div style={{
-                        width: '32px', height: '32px', borderRadius: '999px',
-                        background: 'linear-gradient(135deg, var(--primary-500), var(--primary-600))',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px',
-                    }}>💰</div>
-                    <span style={{ fontSize: '17px', fontWeight: '600', color: 'var(--ink-primary)' }}>SpendWise</span>
+                <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+                    <Logo size={32} />
+                    <span style={{ fontSize: '18px', fontWeight: '700', color: 'var(--ink-primary)', letterSpacing: '-0.3px' }}>SpendWise</span>
                 </Link>
 
                 <nav style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>

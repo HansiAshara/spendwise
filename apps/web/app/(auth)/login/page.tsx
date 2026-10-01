@@ -26,6 +26,7 @@ import { useToast } from '@/hooks/useToast'
 import { useAuthStore } from '@/store/useAuthStore'
 import api from '@/lib/api'
 import GoogleSignInButton from '@/components/auth/GoogleSignInButton'
+import Logo from '@/components/ui/Logo'
 
 // ── Validation schema ─────────────────────────────────
 // Same rules as backend — validated on frontend first
@@ -143,13 +144,7 @@ export default function LoginPage() {
             <div style={{ marginBottom: '32px' }}>
                 {/* Mobile logo — only shows on mobile */}
                 <div className="flex md:hidden items-center gap-2 mb-8">
-                    <div style={{
-                        width: '32px', height: '32px',
-                        background: 'var(--primary-500)',
-                        borderRadius: '8px',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '16px',
-                    }}>💰</div>
+                    <Logo size={32} />
                     <span style={{ fontSize: '18px', fontWeight: '600', color: 'var(--ink-primary)' }}>
                         SpendWise
                     </span>
