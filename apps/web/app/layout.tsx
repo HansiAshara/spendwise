@@ -43,9 +43,12 @@ export default function RootLayout({
               (function() {
                 try {
                   var saved = localStorage.getItem('spendwise_theme');
-                  var theme = saved || 'light';
-                  if (theme === 'system') {
-                    theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                  var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  var theme = 'light';
+                  if (!saved || saved === 'system') {
+                    theme = isDark ? 'dark' : 'light';
+                  } else {
+                    theme = saved;
                   }
                   document.documentElement.setAttribute('data-theme', theme);
                 } catch (e) {}

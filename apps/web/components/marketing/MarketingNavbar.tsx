@@ -16,23 +16,10 @@ import Logo from '@/components/ui/Logo'
 export default function MarketingNavbar() {
     const { token } = useAuthStore()
     const [mounted, setMounted] = useState(false)
-    const [theme, setTheme] = useState<'light' | 'dark'>('light')
 
     useEffect(() => {
         setMounted(true)
-        const saved = (localStorage.getItem('spendwise_theme') as 'light' | 'dark' | 'system') || 'light'
-        const resolved = saved === 'system'
-            ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-            : saved
-        setTheme(resolved as 'light' | 'dark')
     }, [])
-
-    const toggleTheme = () => {
-        const next = theme === 'dark' ? 'light' : 'dark'
-        setTheme(next)
-        localStorage.setItem('spendwise_theme', next)
-        document.documentElement.setAttribute('data-theme', next)
-    }
 
     return (
         <header style={{
@@ -52,38 +39,17 @@ export default function MarketingNavbar() {
                     <span style={{ fontSize: '18px', fontWeight: '700', color: 'var(--ink-primary)', letterSpacing: '-0.3px' }}>SpendWise</span>
                 </Link>
 
-                <nav style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                <nav style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
                     <a href="#features" style={{ fontSize: '13px', color: 'var(--ink-secondary)', textDecoration: 'none', fontWeight: '500' }}>Features</a>
                     <a href="#how-it-works" style={{ fontSize: '13px', color: 'var(--ink-secondary)', textDecoration: 'none', fontWeight: '500' }}>How it works</a>
-
-                    <button
-                        onClick={toggleTheme}
-                        aria-label="Toggle Theme"
-                        title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-                        style={{
-                            background: 'var(--hover-bg)',
-                            border: '1px solid var(--ink-border)',
-                            borderRadius: '8px',
-                            padding: '5px 9px',
-                            cursor: 'pointer',
-                            fontSize: '14px',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: 'var(--ink-primary)',
-                            transition: 'all 0.15s',
-                        }}
-                    >
-                        {theme === 'dark' ? '☀️' : '🌙'}
-                    </button>
 
                     {mounted && token ? (
                         <Link href="/dashboard" className="btn btn-primary btn-sm">Go to Dashboard</Link>
                     ) : (
-                        <>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                             <Link href="/login" style={{ fontSize: '13px', color: 'var(--ink-secondary)', textDecoration: 'none', fontWeight: '500' }}>Sign in</Link>
                             <Link href="/register" className="btn btn-primary btn-sm">Get started free</Link>
-                        </>
+                        </div>
                     )}
                 </nav>
             </div>
