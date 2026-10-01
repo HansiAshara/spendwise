@@ -236,17 +236,27 @@ export default function Sidebar() {
                     marginBottom: '8px',
                     cursor: 'default',
                 }}>
-                    {/* Avatar with initials */}
+                    {/* Avatar with initials or profile picture */}
                     <div style={{
                         width: '32px', height: '32px',
                         borderRadius: '50%',
-                        background: 'linear-gradient(135deg, var(--primary-500), var(--primary-600))',
+                        background: user?.avatarUrl ? 'transparent' : 'linear-gradient(135deg, var(--primary-500), var(--primary-600))',
                         display: 'flex', alignItems: 'center',
                         justifyContent: 'center',
                         fontSize: '12px', fontWeight: '600', color: 'white',
                         flexShrink: 0,
+                        overflow: 'hidden',
+                        border: user?.avatarUrl ? '1px solid rgba(255,255,255,0.15)' : 'none',
                     }}>
-                        {user ? getInitials(user.name) : '?'}
+                        {user?.avatarUrl ? (
+                            <img
+                                src={user.avatarUrl}
+                                alt={user.name}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                        ) : (
+                            user ? getInitials(user.name) : '?'
+                        )}
                     </div>
                     {/* Name and email */}
                     <div style={{ flex: 1, minWidth: 0 }}>

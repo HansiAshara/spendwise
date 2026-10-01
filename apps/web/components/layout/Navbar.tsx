@@ -14,6 +14,7 @@
 
 'use client'
 
+import Link from 'next/link'
 import { useAuthStore } from '@/store/useAuthStore'
 import { getInitials } from '@/lib/utils'
 
@@ -132,18 +133,32 @@ export default function Navbar({ title, subtitle }: NavbarProps) {
                 </button>
 
                 {/* User avatar */}
-                <div style={{
-                    width: '34px', height: '34px',
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, var(--primary-500), var(--primary-600))',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '12px', fontWeight: '600', color: 'white',
-                    cursor: 'pointer',
-                    border: '2px solid var(--primary-100)',
-                    flexShrink: 0,
-                }}>
-                    {user ? getInitials(user.name) : '?'}
-                </div>
+                <Link
+                    href="/settings"
+                    style={{
+                        width: '34px', height: '34px',
+                        borderRadius: '50%',
+                        background: user?.avatarUrl ? 'transparent' : 'linear-gradient(135deg, var(--primary-500), var(--primary-600))',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: '12px', fontWeight: '600', color: 'white',
+                        cursor: 'pointer',
+                        border: '2px solid var(--primary-100)',
+                        flexShrink: 0,
+                        overflow: 'hidden',
+                        textDecoration: 'none',
+                    }}
+                    title={user?.name || 'Profile'}
+                >
+                    {user?.avatarUrl ? (
+                        <img
+                            src={user.avatarUrl}
+                            alt={user.name}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                    ) : (
+                        user ? getInitials(user.name) : '?'
+                    )}
+                </Link>
             </div>
         </header>
     )
