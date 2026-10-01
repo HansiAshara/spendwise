@@ -126,9 +126,23 @@ Respond in this EXACT JSON format only — no extra text, no markdown:
 
     // ── Call Gemini API ───────────────────────────────
     try {
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
-        const result = await model.generateContent(prompt)
-        const text = result.response.text()
+        let text = ''
+        try {
+            const model = genAI.getGenerativeModel({
+                model: 'gemini-2.5-flash',
+                generationConfig: { responseMimeType: 'application/json' },
+            })
+            const result = await model.generateContent(prompt)
+            text = result.response.text()
+        } catch (firstErr) {
+            console.warn('gemini-2.5-flash failed, falling back to gemini-1.5-flash:', firstErr)
+            const fallbackModel = genAI.getGenerativeModel({
+                model: 'gemini-1.5-flash',
+                generationConfig: { responseMimeType: 'application/json' },
+            })
+            const result = await fallbackModel.generateContent(prompt)
+            text = result.response.text()
+        }
 
         // Clean response — remove markdown code blocks if present
         const cleaned = text
@@ -146,8 +160,8 @@ Respond in this EXACT JSON format only — no extra text, no markdown:
             categoryBreakdown: categoryTotals,
         }
 
-    } catch (error) {
-        console.error('Gemini API error:', error)
-        throw new Error('Failed to generate insights. Please try again later.')
+    } catch (error: any) {
+        console.error('Gemini API error details:', error?.message || error)
+        throw new Error(error?.message || 'Failed to generate insights. Please try again later.')
     }
 }
