@@ -20,6 +20,21 @@ Built as an **npm Workspaces Monorepo**, the project pairs a modern **Next.js 16
 
 ---
 
+## 📖 Developer Documentation
+
+Comprehensive technical documentation is available in the [`docs/`](docs/README.md) directory:
+
+- **[Documentation Index](docs/README.md)**: Overview of all technical guides and reading order.
+- **[Getting Started](docs/getting-started.md)**: Local installation, environment setup, and database setup.
+- **[Architecture](docs/architecture.md)**: Component breakdown, monorepo paths, data flows, and architecture diagram.
+- **[Database Guide](docs/database.md)**: Schema models, relationships, constraints, and ER diagram.
+- **[API Reference](docs/api.md)**: Complete endpoint specifications with request/response examples.
+- **[Authentication & Security](docs/authentication-and-security.md)**: JWT auth, Google OAuth, password hashing, and security considerations.
+- **[Development & Testing](docs/development-and-testing.md)**: Workspace scripts, code conventions, test suites, and CI workflows.
+- **[Deployment Guide](docs/deployment.md)**: Vercel serverless setup, Docker containerization, and environment variables.
+
+---
+
 ## Key Features
 
 - **Interactive Dashboard & Analytics**: Real-time spending breakdowns, monthly spending trends, and category distribution powered by Chart.js.
