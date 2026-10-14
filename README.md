@@ -1,12 +1,13 @@
 # 💰 Spendwise — Smart AI-Powered Personal Finance & Budget Tracker
 
-[![CI Workflow](https://github.com/HansiAshara/spandwise/actions/workflows/ci.yml/badge.svg)](https://github.com/HansiAshara/spandwise/actions/workflows/ci.yml)
+[![CI Workflow](https://github.com/HansiAshara/spendwise/actions/workflows/ci.yml/badge.svg)](https://github.com/HansiAshara/spendwise/actions/workflows/ci.yml)
+[![Live Demo](https://img.shields.io/badge/Demo-Live%20App-00C7B7?style=flat&logo=vercel&logoColor=white)](https://spendwise-web-zeta.vercel.app)
 ![Next.js](https://img.shields.io/badge/Frontend-Next.js%2016-000000?style=flat&logo=nextdotjs)
 ![React](https://img.shields.io/badge/UI-React%2019-61DAFB?style=flat&logo=react)
 ![TypeScript](https://img.shields.io/badge/Language-TypeScript-3178C6?style=flat&logo=typescript)
 ![Node.js](https://img.shields.io/badge/Backend-Node.js%20%2F%20Express-339933?style=flat&logo=nodedotjs)
 ![Prisma](https://img.shields.io/badge/ORM-Prisma-2D3748?style=flat&logo=prisma)
-![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL%20%2F%20MSSQL-4169E1?style=flat&logo=postgresql)
+![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-4169E1?style=flat&logo=postgresql)
 ![Docker](https://img.shields.io/badge/DevOps-Docker-2496ED?style=flat&logo=docker)
 ![License](https://img.shields.io/badge/License-ISC-blue.svg)
 
@@ -14,9 +15,33 @@
 
 ## Overview
 
-**Spendwise** is an intuitive, full-stack personal financial management and budgeting platform designed to simplify expense tracking, financial planning, and analytical reporting. Leveraging **AI-driven insights (Google Gemini / Anthropic Claude)**, real-time chart visualisations, and automated report exports (PDF/CSV), Spendwise enables users to take full control of their financial health with precision and ease.
+**Spendwise** is an intuitive, full-stack personal financial management and budgeting platform designed to simplify expense tracking, financial planning, and analytical reporting. Leveraging **AI-driven insights (Google Gemini)**, real-time chart visualisations, and automated report exports (PDF/CSV), Spendwise enables users to take full control of their financial health with precision and ease.
 
 Built as an **npm Workspaces Monorepo**, the project pairs a modern **Next.js 16 (App Router)** frontend with a robust, scalable **Express & Prisma API** backend.
+
+> 🚀 **Live Demo**: [https://spendwise-web-zeta.vercel.app](https://spendwise-web-zeta.vercel.app)  
+> 📚 **Developer Documentation**: [Explore the comprehensive `docs/` technical guides](docs/README.md)
+
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [📖 Developer Documentation](#-developer-documentation)
+- [Key Features](#key-features)
+- [Tech Stack & Architecture](#tech-stack--architecture)
+- [Repository Structure](#repository-structure)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Environment Setup](#environment-setup)
+  - [Database Setup & Migration](#database-setup--migration)
+  - [Running the Application](#running-the-application)
+- [Docker Deployment](#docker-deployment-local-development)
+- [Testing & Code Quality](#testing--code-quality)
+- [Key API Endpoints](#key-api-endpoint-summary)
+- [CI/CD Pipeline](#cicd-pipeline)
+- [Author & License](#author)
 
 ---
 
@@ -121,7 +146,7 @@ Ensure you have the following installed on your local machine:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/HansiAshara/spandwise.git
+   git clone https://github.com/HansiAshara/spendwise.git
    cd spendwise
    ```
 
@@ -142,14 +167,14 @@ PORT=5000
 NODE_ENV=development
 CORS_ORIGIN=http://localhost:3000
 
-# Database Connection
+# Database Connection (PostgreSQL)
 DATABASE_URL="postgresql://postgres:password@localhost:5432/spendwise?schema=public"
 
 # Authentication
 JWT_SECRET=your_jwt_secret_key_here
 JWT_EXPIRES_IN=7d
 
-# AI Services (Optional - for smart financial insights)
+# AI Services (Required for financial insights)
 GEMINI_API_KEY=your_google_gemini_api_key
 
 # Media Storage (Optional - for avatar uploads)
@@ -162,6 +187,11 @@ SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your_email@gmail.com
 SMTP_PASS=your_app_password
+SMTP_FROM="SpendWise <noreply@spendwise.com>"
+FRONTEND_URL=http://localhost:3000
+
+# Google OAuth (Optional - for Google Sign-In)
+GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
 ```
 
 #### 2. Frontend Environment Configuration (`apps/web/.env.local`)
@@ -258,6 +288,8 @@ npm run build:web
 | **Export** | `GET` | `/api/export/csv` | Download expense report in CSV format | ✅ |
 | | `GET` | `/api/export/pdf` | Download formatted PDF financial statement| ✅ |
 
+> 💡 **Complete API Documentation**: See [`docs/api.md`](docs/api.md) for the exhaustive specification of all 25+ endpoints with input validation rules, status codes, and request/response examples.
+
 ---
 
 ## CI/CD Pipeline
@@ -278,6 +310,14 @@ Contributions are welcome! If you'd like to contribute:
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
 4. Push to the branch (`git push origin feature/AmazingFeature`).
 5. Open a Pull Request.
+
+---
+
+## 👤 Author
+
+Developed by **Hansi Ashara**
+- **GitHub**: [@HansiAshara](https://github.com/HansiAshara)
+- **Repository**: [https://github.com/HansiAshara/spendwise](https://github.com/HansiAshara/spendwise)
 
 ---
 

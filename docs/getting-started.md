@@ -23,7 +23,7 @@ SpendWise is configured as an **npm workspaces monorepo**. All dependencies for 
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/HansiAshara/spandwise.git
+git clone https://github.com/HansiAshara/spendwise.git
 cd spendwise
 
 # 2. Install dependencies for all workspaces
